@@ -24,9 +24,9 @@ import seaborn as sns
 sns.set_style('ticks', rc={'axes.grid':True})
 sns.set_context('talk')
 
-# set matplotlib formats
-from IPython.display import set_matplotlib_formats
-set_matplotlib_formats('retina')
+# # set matplotlib formats
+# from IPython.display import set_matplotlib_formats
+# set_matplotlib_formats('retina')
 
 # data structures
 GC_matrix = collections.namedtuple('GC_matrix', ['gene', 'cell', 'data'])

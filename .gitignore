@@ -1,3 +1,8 @@
+# to not include things
+demo/data/
+demo/data.tar.gz
+demo/results/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

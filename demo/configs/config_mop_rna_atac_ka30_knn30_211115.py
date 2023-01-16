@@ -9,8 +9,9 @@ import os
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 ka_smooth = 30 
-knn = 30 
+knn = 30
 date = 211115
+
 # # Configs  
 name = 'mop_rna_atac_ka{}_knn{}_{}'.format(ka_smooth, knn, date,)
 outdir = os.path.join(dir_path, '../results')

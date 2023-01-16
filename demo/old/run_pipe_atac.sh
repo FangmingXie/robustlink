@@ -19,36 +19,33 @@ num_metacell_limit=1001
 modx='rna'
 mody='atac'
 ka=30
-knns=(30)
+knn=30
 corr_type='spearmanr'
 subsample_frac=0.1
 subsample_times=1
 resolutions=(10) # Leiden clustering resolutions used to generate metacells -- just 1 for demo
 
 # 1.
-for knn in ${knns[@]}; do
+echo $modx, $mody, $ka, $knn
 
-	echo $modx, $mody, $ka, $knn
+# scf config template
+template="./configs/config_template_${modx}_${mody}_ka_knn.py"
 
-	# scf config template
-	template="./configs/config_template_${modx}_${mody}_ka_knn.py"
+# prep config file
+nameTagInConfigFile="mop_${modx}_${mody}_ka${ka}_knn${knn}_${date}" # need to make sure they are consistent with the config_template
+scf_config="./configs/config_${nameTagInConfigFile}.py"
 
-	# prep config file
-	nameTagInConfigFile="mop_${modx}_${mody}_ka${ka}_knn${knn}_${date}" # need to make sure they are consistent with the config_template
-	scf_config="./configs/config_${nameTagInConfigFile}.py"
+# fill knn, ka_smooth, date
+cp $template ${scf_config} 
+sed -i "s/knn = TOBEFILLED/knn = ${knn}/g" ${scf_config} 
+sed -i "s/ka_smooth = TOBEFILLED/ka_smooth = ${ka}/g" ${scf_config} 
+sed -i "s/date = TOBEFILLED/date = ${date}/g" ${scf_config} 
 
-	# fill knn, ka_smooth, date
-	cp $template ${scf_config} 
-	sed -i "s/knn = TOBEFILLED/knn = ${knn}/g" ${scf_config} 
-	sed -i "s/ka_smooth = TOBEFILLED/ka_smooth = ${ka}/g" ${scf_config} 
-	sed -i "s/date = TOBEFILLED/date = ${date}/g" ${scf_config} 
-
-	# # run SCF
-	./scf/SCF_main_repeat_subsampling.py \
-		-c ${scf_config} \
-		-s ${subsample_frac} \
-		-sn ${subsample_times}
-done
+# # run SCF
+./scf/SCF_main_repeat_subsampling.py \
+	-c ${scf_config} \
+	-s ${subsample_frac} \
+	-sn ${subsample_times}
 
 # 2.
 # run leiden clustering for each (i, knn) 
