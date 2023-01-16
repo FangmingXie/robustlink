@@ -1,0 +1,101 @@
+nohup: ignoring input
+10x_cells_v3, snmcseq_gene, 30, 30
+11/15/2021 12:46:04 PM ./configs config_mop_10x_cells_v3_snmcseq_gene_ka30_knn30_211115.py
+11/15/2021 12:46:04 PM Adding ./configs to python path
+11/15/2021 12:46:04 PM * Begin integration
+11/15/2021 12:46:04 PM Metadata snmcseq_gene (9366, 32)
+11/15/2021 12:46:04 PM Metadata 10x_cells_v3 (69727, 8)
+11/15/2021 12:46:42 PM Feature matrix snmcseq_gene (4754, 9366)
+11/15/2021 12:46:50 PM Feature matrix 10x_cells_v3 (4694, 69727)
+11/15/2021 12:46:50 PM Done reading data
+11/15/2021 12:46:50 PM Subsampling 1/1
+11/15/2021 12:46:50 PM Smoothing within modalities...
+11/15/2021 12:47:00 PM snmcseq_gene: 10.12986445426941
+11/15/2021 12:48:23 PM 10x_cells_v3: 82.41955399513245
+11/15/2021 12:48:23 PM Constructing a joint matrix...
+11/15/2021 12:48:23 PM Imputing into snmcseq_gene space...
+11/15/2021 12:48:23 PM for snmcseq_gene cells...
+11/15/2021 12:48:23 PM for 10x_cells_v3 cells...
+11/15/2021 12:51:41 PM Saved output to: /cndd2/fangming/projects/scf_enhancers/scripts/SingleCellFusion_EnhancerPaper/demo/results/pcX_all_mop_10x_cells_v3_snmcseq_gene_ka30_knn30_211115.npy.0
+11/15/2021 12:51:41 PM Saved output to: /cndd2/fangming/projects/scf_enhancers/scripts/SingleCellFusion_EnhancerPaper/demo/results/cells_all_mop_10x_cells_v3_snmcseq_gene_ka30_knn30_211115.npy.0
+11/15/2021 12:51:41 PM Done integration into a common PC space
+Time used to build kNN map 0.22106194496154785
+Time used to get kNN 0.9749240875244141
+Time used to build kNN map 0.6375203132629395
+Time used to get kNN 9.381680727005005
+[  1.00000000e+00   1.25892541e+00   1.58489319e+00   1.99526231e+00
+   2.51188643e+00   3.16227766e+00   3.98107171e+00   5.01187234e+00
+   6.30957344e+00   7.94328235e+00   1.00000000e+01   1.25892541e+01
+   1.58489319e+01   1.99526231e+01   2.51188643e+01   3.16227766e+01
+   3.98107171e+01   5.01187234e+01   6.30957344e+01   7.94328235e+01
+   1.00000000e+02   1.25892541e+02   1.58489319e+02   1.99526231e+02
+   2.51188643e+02   3.16227766e+02   3.98107171e+02   5.01187234e+02
+   6.30957344e+02   7.94328235e+02   1.00000000e+03   1.25892541e+03
+   1.58489319e+03   1.99526231e+03   2.51188643e+03   3.16227766e+03
+   3.98107171e+03   5.01187234e+03   6.30957344e+03   7.94328235e+03
+   1.00000000e+04]
+processing ./results/cells_10x_cells_v3_mop_10x_cells_v3_snmcseq_gene_ka30_knn30_211115.npy.0.npy
+Time used to build kNN map 0.6745405197143555
+Time used to get kNN 3.519482135772705
+Time spent on leiden clustering: 5.48093056678772
+Time spent on leiden clustering: 6.33192253112793
+Time spent on leiden clustering: 6.211483716964722
+Time spent on leiden clustering: 5.802975654602051
+Time spent on leiden clustering: 5.974542856216431
+Time spent on leiden clustering: 6.280980110168457
+Time spent on leiden clustering: 5.573419809341431
+Time spent on leiden clustering: 5.646925210952759
+Time spent on leiden clustering: 5.6493189334869385
+Time spent on leiden clustering: 6.065633535385132
+Time spent on leiden clustering: 5.824633836746216
+Time spent on leiden clustering: 6.0272157192230225
+Time spent on leiden clustering: 5.920766830444336
+Time spent on leiden clustering: 5.868176221847534
+Time spent on leiden clustering: 6.730098485946655
+Time spent on leiden clustering: 6.230431079864502
+Time spent on leiden clustering: 5.996161937713623
+Time spent on leiden clustering: 5.877737998962402
+Time spent on leiden clustering: 6.428753137588501
+Time spent on leiden clustering: 6.21046257019043
+Time spent on leiden clustering: 6.124706983566284
+Time spent on leiden clustering: 6.358439683914185
+Time spent on leiden clustering: 6.991991996765137
+Time spent on leiden clustering: 7.677650451660156
+Time spent on leiden clustering: 7.564631223678589
+Time spent on leiden clustering: 7.069056510925293
+Time spent on leiden clustering: 7.673006057739258
+Time spent on leiden clustering: 8.301456689834595
+Time spent on leiden clustering: 9.279521226882935
+Time spent on leiden clustering: 8.695491790771484
+Time spent on leiden clustering: 10.365647077560425
+Time spent on leiden clustering: 11.552794694900513
+Time spent on leiden clustering: 12.65607762336731
+Time spent on leiden clustering: 14.591843366622925
+Time spent on leiden clustering: 16.384644985198975
+Time spent on leiden clustering: 17.236583948135376
+Time spent on leiden clustering: 15.87674593925476
+Time spent on leiden clustering: 16.025245666503906
+Time spent on leiden clustering: 14.042346477508545
+Time spent on leiden clustering: 15.172467231750488
+Time spent on leiden clustering: 14.802016019821167
+./results/clusterings_10x_cells_v3_mop_10x_cells_v3_snmcseq_gene_ka30_knn30_211115_sub0.tsv.gz
+11/15/2021 12:58:13 PM 10x_cells_v3,snmcseq_gene,mop_10x_cells_v3_snmcseq_gene_ka30_knn30_211115,0,spearmanr,False,1001
+11/15/2021 12:58:13 PM <class 'numpy.ndarray'>_(69727,)_cell_10x_cells_v3.txt
+11/15/2021 12:58:13 PM <class 'numpy.ndarray'>_(9931,)_cell_snmcseq_gene.txt
+11/15/2021 12:58:13 PM <class 'numpy.ndarray'>_(31053,)_gene_10x_cells_v3.txt
+Traceback (most recent call last):
+  File "./correlate_metacells_mc_rna.py", line 160, in wrap_corr_analysis_mc
+    logging.info("{}_{}_{}".format(type(item), item.shape, fname))
+  File "/cndd2/fangming/venvs/conda_enhancer/lib/python3.6/site-packages/pandas/core/generic.py", line 5177, in __getattr__
+    if self._info_axis._can_hold_identifiers_and_holds_name(name):
+  File "/cndd2/fangming/venvs/conda_enhancer/lib/python3.6/site-packages/pandas/core/generic.py", line 5177, in __getattr__
+    if self._info_axis._can_hold_identifiers_and_holds_name(name):
+  File "/cndd2/fangming/venvs/conda_enhancer/lib/python3.6/site-packages/pandas/core/generic.py", line 5177, in __getattr__
+    if self._info_axis._can_hold_identifiers_and_holds_name(name):
+  [Previous line repeated 994 more times]
+  File "/cndd2/fangming/venvs/conda_enhancer/lib/python3.6/site-packages/pandas/core/generic.py", line 488, in _info_axis
+    return getattr(self, self._info_axis_name)
+RecursionError: maximum recursion depth exceeded
+Command exited with non-zero status 1
+834.46user 47.52system 12:13.41elapsed 120%CPU (0avgtext+0avgdata 13402900maxresident)k
+3192inputs+6469648outputs (2major+20495626minor)pagefaults 0swaps
