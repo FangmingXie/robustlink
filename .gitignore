@@ -2,6 +2,8 @@
 demo/data/
 demo/data.tar.gz
 demo/results/
+data/
+data.tar.gz
 *log*
 
 # Byte-compiled / optimized / DLL files
