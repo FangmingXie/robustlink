@@ -2,6 +2,7 @@
 demo/data/
 demo/data.tar.gz
 demo/results/
+*log*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
