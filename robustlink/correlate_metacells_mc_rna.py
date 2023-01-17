@@ -203,10 +203,9 @@ def wrap_corr_analysis_mc(
     )
     return 
 
-def create_parser():
+def add_args(parser):
     """
     """
-    parser = argparse.ArgumentParser()
     parser.add_argument('-modx', '--mod_x', required=True, type=str)
     parser.add_argument('-mody', '--mod_y', required=True, type=str)
     parser.add_argument('-tag', '--input_name_tag', required=True, type=str)
@@ -216,16 +215,9 @@ def create_parser():
                                               help="choose from pearsonr or spearmanr")
     parser.add_argument('-f', '--force', action='store_true', help='to overwrite existing file')
     parser.add_argument('-n', '--num_metacell_limit', default=0, type=int, help='max num of metacells')
-    return parser
+    return 
 
-
-if __name__ == "__main__":
-    # 
-    logging.basicConfig(level=logging.INFO)
-
-    parser = create_parser()
-    args = parser.parse_args()
-
+def main(args):
     # output setting
     # run this with each combination of (i_sub, knn)
     mod_x = args.mod_x
@@ -246,3 +238,12 @@ if __name__ == "__main__":
         force=force,
         num_metacell_limit=num_metacell_limit,
     )
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    add_args(parser)
+    args = parser.parse_args()
+
+    logging.basicConfig(level=logging.INFO)
+
+    main(args)

@@ -1,6 +1,6 @@
 """
 """
-from __init__ import *
+from .__init__ import *
 
 import subprocess as sp
 import os

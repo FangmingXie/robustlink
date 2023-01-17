@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """SingleCellFusion main rontine"""
 
-from __init__ import *
+from .__init__ import *
 
 from scipy import sparse
 import collections
@@ -10,8 +10,8 @@ import sys
 import pickle
 import argparse
 
-import basic_utils
-import SCF_utils
+from . import basic_utils
+from . import SCF_utils
 
 log = basic_utils.create_logger()
 

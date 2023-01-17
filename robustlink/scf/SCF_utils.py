@@ -1,6 +1,6 @@
 """Utilities for SingleCellFusion
 """
-from __init__ import *
+from .__init__ import *
 
 import functools
 import collections
@@ -11,9 +11,10 @@ from scipy.stats import zscore
 import fbpca
 import sys
 import logging
+import fbpca
 
-import basic_utils
-import clst_utils
+from . import basic_utils
+from . import clst_utils
 
 def sparse_adj_to_mat(adjs, row_size, col_size, dists=''):
     """Turn a knn adjacency matrix to a sparse matrix
@@ -47,8 +48,7 @@ def smooth_in_modality(counts_matrix, norm_counts_matrix, k, ka, npc=100, sigma=
         - markov affinity matrix
     """
     # from sklearn.neighbors import NearestNeighbors
-    import fbpca
-    import clst_utils
+    # import clst_utils
     
     assert counts_matrix.shape[1] == norm_counts_matrix.shape[1] 
 

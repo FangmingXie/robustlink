@@ -3,6 +3,7 @@
 
 from multiprocessing import Pool,cpu_count
 import argparse
+import os
 
 import numpy as np
 import logging
@@ -10,11 +11,8 @@ import fbpca
 import itertools
 import argparse
 
-import sys
-sys.path.insert(0, "../")
 import utils
-sys.path.insert(0, "./scf/")
-import clst_utils
+from scf import clst_utils
 
 def pipe_singlemod_clustering(
         f_gene, f_cell, f_mat, 
@@ -54,28 +52,26 @@ def pipe_singlemod_clustering(
     return 
 
 def wrapper_singlemod_clustering(
-        mod, knns, subsample_times, 
+        mod, data_dir, out_dir, knns, subsample_times, 
         input_name_tag,
         resolutions=[1],
     ):
     """
     """
     # input data
-    f_cell = './data/{}_hvfeatures.cell'.format(mod)
-    f_gene = './data/{}_hvfeatures.gene'.format(mod)
-    f_mat = './data/{}_hvfeatures.npz'.format(mod)
+    f_cell = os.path.join(data_dir, f'{mod}_hvfeatures.cell')
+    f_gene = os.path.join(data_dir, f'{mod}_hvfeatures.gene')
+    f_mat  = os.path.join(data_dir, f'{mod}_hvfeatures.npz')
 
     # input cell lists
     # input_name_tag = "mop_10x_cells_v3_snmcseq_gene_ka30_knn{{}}_201130"
-    flist_selected_cells = [
-        ('./results/cells_{}_{}.npy.{}.npy'
-         .format(mod, input_name_tag.format(knn), i_sub))
+    flist_selected_cells = [os.path.join(out_dir, 
+            f'cells_{mod}_{input_name_tag.format(knn)}.npy.{i_sub}.npy')
             for knn, i_sub in itertools.product(knns, np.arange(subsample_times))
         ]
     # output files
-    flist_res = [
-        ('./results/clusterings_{}_{}_sub{}.tsv.gz'
-         .format(mod, input_name_tag.format(knn), i_sub))
+    flist_res = [os.path.join(out_dir, 
+            f'clusterings_{mod}_{input_name_tag.format(knn)}_sub{i_sub}.tsv.gz')
             for knn, i_sub in itertools.product(knns, np.arange(subsample_times))
         ]
 
@@ -96,25 +92,26 @@ def wrapper_singlemod_clustering(
     )
     return 
 
-def create_parser():
+def add_args(parser):
     """
     """
-    parser = argparse.ArgumentParser()
     parser.add_argument("-m", "--mod", help="modality", required=True)
+    parser.add_argument("-i", "--data_dir", help="data directory", required=True)
+    parser.add_argument("-o", "--out_dir", help="output result directory", required=True)
     parser.add_argument("-ks", "--knns", help="a list of knns", nargs="+", required=True)
     parser.add_argument("-sn", "--subsample_times", help=">1", type=int, required=True)
     parser.add_argument("-tag", "--input_name_tag", help="input_name_tag", required=True)
     parser.add_argument("-r", "--resolutions", nargs='+', help="Leiden clustering resolutions", required=True)
-    return parser
+    return 
 
-if __name__ == "__main__":
-    # 
-    parser = create_parser()
-    args = parser.parse_args()
-
+def main(args):
+    """
+    """
     # output setting
     # run this with each combination of (i_sub, knn)
     mod = args.mod
+    data_dir = args.data_dir
+    out_dir = args.out_dir
     knns = np.array(args.knns).astype(int)
     subsample_times = args.subsample_times
     input_name_tag = args.input_name_tag
@@ -124,8 +121,13 @@ if __name__ == "__main__":
     elif isinstance(resolutions, list):
         resolutions = [int(r) for r in resolutions]
 
-
     wrapper_singlemod_clustering(
-        mod, knns, subsample_times, input_name_tag,
+        mod, data_dir, out_dir, knns, subsample_times, input_name_tag,
         resolutions=resolutions,
     )
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    add_args(parser)
+    args = parser.parse_args()
+    main(args)
