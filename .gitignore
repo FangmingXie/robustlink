@@ -1,9 +1,7 @@
 # to not include things
-demo/data/
-demo/data.tar.gz
-demo/results/
-data/
 data.tar.gz
+data/
+results/
 *log*
 
 # Byte-compiled / optimized / DLL files

@@ -43,7 +43,7 @@ scf_config="./configs/config_${nameTagInConfigFile}.py"
 
 # # run SCF
 echo "STEP1..."
-./scf/SCF_main_repeat_subsampling.py \
+./robustlink/scf/SCF_main_repeat_subsampling.py \
 	-c ${scf_config} \
 	-s ${subsample_frac} \
 	-sn ${subsample_times}
@@ -53,7 +53,7 @@ echo "STEP1..."
 # get a list of samples
 echo "STEP2..."
 inputNameTag="mop_${modx}_${mody}_ka${ka}_knn{}_${date}"
-./generate_metacells_rna.py --mod $modx --knns $knn -sn ${subsample_times} -tag $inputNameTag -r ${resolutions}
+./robustlink/generate_metacells_rna.py --mod $modx --knns $knn -sn ${subsample_times} -tag $inputNameTag -r ${resolutions}
 
 # 3.
 # # correlation analysis (i, knn, r)
@@ -61,7 +61,7 @@ echo "STEP3..."
 nameTagInConfigFile="mop_${modx}_${mody}_ka${ka}_knn${knn}_${date}" # 	
 for (( i=0; i<${subsample_times}; i++ )); do
 # 	# # run corr analysis
-./correlate_metacells_mc_rna.py \
+./robustlink/correlate_metacells_mc_rna.py \
 	-modx $modx \
 	-mody $mody \
 	-tag $nameTagInConfigFile \
