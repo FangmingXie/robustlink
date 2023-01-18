@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import sys
 from multiprocessing import Pool,cpu_count
 from scipy import sparse
 import pickle
@@ -10,7 +9,6 @@ import logging
 import pandas as pd
 import numpy as np
 
-sys.path.insert(0, "../")
 import utils
 import enhancer_gene_utils
 

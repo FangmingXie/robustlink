@@ -6,6 +6,7 @@ import logging
 from scf import SCF_main_repeat_subsampling
 import generate_metacells_rna
 import correlate_metacells_mc_rna
+import correlate_metacells_atac_rna
 
 def create_parser():
     """
@@ -25,9 +26,14 @@ def create_parser():
     generate_metacells_rna.add_args(metacell)
 
     # corr
-    corr = subparsers.add_parser('corr')
-    corr.set_defaults(cmd='corr')
-    correlate_metacells_mc_rna.add_args(corr)
+    corr_mc = subparsers.add_parser('corr_mc')
+    corr_mc.set_defaults(cmd='corr_mc')
+    correlate_metacells_mc_rna.add_args(corr_mc)
+
+    # corr
+    corr_atac = subparsers.add_parser('corr_atac')
+    corr_atac.set_defaults(cmd='corr_atac')
+    correlate_metacells_atac_rna.add_args(corr_atac)
 
     return parser
 
@@ -44,5 +50,8 @@ if __name__ == "__main__":
     if args.cmd == 'metacell':
         generate_metacells_rna.main(args)
 
-    if args.cmd == 'corr':
+    if args.cmd == 'corr_mc':
         correlate_metacells_mc_rna.main(args)
+
+    if args.cmd == 'corr_atac':
+        correlate_metacells_atac_rna.main(args)

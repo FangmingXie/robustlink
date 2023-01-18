@@ -12,11 +12,8 @@
 # output: corrs.pkl (i, knn, r) 
 
 date="211115" # still use the (finished) 1130 results
-
 data_dir="./data"
 out_dir="./results"
-# generate (i, knn) knn_xy matrices
-# modalities
 modx='rna'
 mody='mc'
 ka=30
@@ -27,20 +24,28 @@ subsample_times=1
 resolutions=(10) # Leiden clustering resolutions used to generate metacells -- just 1 for demo
 num_metacell_limit=1001
 
-# 1.
+# generate (i, knn) knn_xy matrices
+# modalities
+# scf config template
+nameTag="mop_${modx}_${mody}_ka${ka}_knn${knn}_${date}" # need to make sure they are consistent with the config_template
+inputNameTag="mop_${modx}_${mody}_ka${ka}_knn{}_${date}"
 echo $modx, $mody, $ka, $knn
 
-# scf config template
-# prep config file
-nameTagInConfigFile="mop_${modx}_${mody}_ka${ka}_knn${knn}_${date}" # need to make sure they are consistent with the config_template
-# scf_config="./robustlink/scf/configs/config_${nameTagInConfigFile}.py"
-	# -c ${scf_config} \
-
+# scf name
+# 1.
 # # run SCF
 echo "STEP1..."
+input_datasets="mc rna"
+input_modalities="mc rna"
+feature_datasets="mc"
+
 python robustlink scf \
 	-i ${data_dir} \
+	-id ${input_datasets} \
+	-im ${input_modalities} \
+	-fd ${feature_datasets} \
 	-o ${out_dir} \
+	-on ${nameTag} \
 	-s ${subsample_frac} \
 	-sn ${subsample_times}
 
@@ -48,7 +53,6 @@ python robustlink scf \
 # run leiden clustering for each (i, knn) 
 # get a list of samples
 echo "STEP2..."
-inputNameTag="mop_${modx}_${mody}_ka${ka}_knn{}_${date}"
 python robustlink metacell \
 	--mod $modx \
 	-i ${data_dir} \
@@ -62,12 +66,12 @@ python robustlink metacell \
 # # correlation analysis (i, knn, r)
 echo "STEP3..."
 for (( i=0; i<${subsample_times}; i++ )); do
-python robustlink corr \
-	-modx $modx \
-	-mody $mody \
-	-tag $nameTagInConfigFile \
-	-isub $i \
-	--corr_type ${corr_type} \
-	-n ${num_metacell_limit} \
-	-f
+	python robustlink corr_mc \
+		-modx $modx \
+		-mody $mody \
+		-tag $nameTag \
+		-isub $i \
+		--corr_type ${corr_type} \
+		-n ${num_metacell_limit} \
+		-f
 done

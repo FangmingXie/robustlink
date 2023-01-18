@@ -52,14 +52,6 @@ def create_parser():
              listed in the same order as input_datasets. 
              '''
     )
-    # may need this in the future
-    # parser.add_argument(
-    #     "-im", "--input_meta", 
-    #     type=str,
-    #     required=True,
-    #     help="(list of str) Input metadata csv file",
-    # )
-
     required.add_argument(
         "-f", "--feature_datasets", 
         metavar="xx.h5ad",
