@@ -1,0 +1,37 @@
+name: robustlink3
+channels:
+  - bioconda
+  - conda-forge
+  - anaconda
+  - defaults
+dependencies:
+  - bedtools
+  - fbpca
+  - h5py
+  - hdf5
+  - igraph
+  - leidenalg
+  - matplotlib
+  - matplotlib-venn
+  - natsort
+  - numba
+  - numpy
+  - pandas
+  - pebble
+  - pip
+  - pybedtools
+  - pysam
+  - python=3.8
+  - python-igraph
+  - samtools
+  - scikit-learn
+  - scipy
+  - seaborn
+  - statsmodels
+  - tqdm
+  - umap-learn
+  - jupyterlab
+  - anndata
+  - scanpy
+  - pip:
+    - annoy

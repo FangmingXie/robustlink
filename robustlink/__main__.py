@@ -44,14 +44,13 @@ if __name__ == "__main__":
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO)
 
-    if args.cmd == 'scf':
+    if not hasattr(args, 'cmd'):
+        raise ValueError("Wrong input, please run: `python robustlink --help`")
+    elif args.cmd == 'scf':
         SCF_main_repeat_subsampling.main(args)
-
-    if args.cmd == 'metacell':
+    elif args.cmd == 'metacell':
         generate_metacells_rna.main(args)
-
-    if args.cmd == 'corr_mc':
+    elif args.cmd == 'corr_mc':
         correlate_metacells_mc_rna.main(args)
-
-    if args.cmd == 'corr_atac':
+    elif args.cmd == 'corr_atac':
         correlate_metacells_atac_rna.main(args)

@@ -1,6 +1,7 @@
 # to not include things
 data.tar.gz
 data/
+newdata/
 results/
 *log*
 

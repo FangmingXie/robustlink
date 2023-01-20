@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from multiprocessing import Pool,cpu_count
 from scipy import sparse
 import pickle
 import argparse
