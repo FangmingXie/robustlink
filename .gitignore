@@ -2,6 +2,7 @@
 data.tar.gz
 data/
 newdata/
+demodata/
 results/
 *log*
 
