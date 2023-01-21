@@ -4,9 +4,9 @@ import argparse
 import logging
 
 from scf import SCF_main_repeat_subsampling
-import generate_metacells_rna
-import correlate_metacells_mc_rna
-import correlate_metacells_atac_rna
+from robustlink import generate_metacells_rna
+from robustlink import correlate_metacells_mc_rna
+from robustlink import correlate_metacells_atac_rna
 
 def create_parser():
     """

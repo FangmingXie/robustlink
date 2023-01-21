@@ -862,6 +862,14 @@ def load_gc_matrix_methylation(f_gene, f_cell, f_mat_mc, f_mat_c):
                               {'c': _mat_c, 'mc': _mat_mc})
     return gxc_raw
 
+def gc_matrix_from_anndata(adata):
+    """assuming a gene by cell AnnData
+    """
+    gene = adata.obs.index.values
+    cell = adata.var.index.values
+    mat = adata.X  
+    return GC_matrix(gene, cell, mat) 
+
 def nondup_legends(ax='', **kwargs):
     """Assuming plt (matplotlib.pyplot) is imported
     """

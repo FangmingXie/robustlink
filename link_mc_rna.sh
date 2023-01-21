@@ -12,10 +12,18 @@
 # output: corrs.pkl (i, knn, r) 
 
 date="211115" # still use the (finished) 1130 results
-data_dir="./data"
 out_dir="./results"
+data_dir="./newdata"
+
 modx='rna'
-mody='atac'
+mody='mc'
+input_datasets="profiles_hvgene_mc.h5ad profiles_hvgene_rna.h5ad"
+input_modalities="mc rna"
+feature_datasets="profiles_hvgene_mc.h5ad"
+input_dataset_rna="./newdata/profiles_hvgene_rna.h5ad"
+modx_step3="profiles_hvgene_rna"
+mody_step3="profiles_hvgene_mc"
+
 ka=30
 knn=30
 corr_type='spearmanr'
@@ -31,14 +39,9 @@ nameTag="mop_${modx}_${mody}_ka${ka}_knn${knn}_${date}" # need to make sure they
 inputNameTag="mop_${modx}_${mody}_ka${ka}_knn{}_${date}"
 echo $modx, $mody, $ka, $knn
 
-# scf name
 # 1.
-# # run SCF
+# # run SCF - repeatedly on subsets of cells (knn, i) -- can be made more general - each with a cell list to work with
 echo "STEP1..."
-input_datasets="atac rna"
-input_modalities="atac rna"
-feature_datasets="atac"
-
 python robustlink scf \
 	-i ${data_dir} \
 	-id ${input_datasets} \
@@ -49,26 +52,24 @@ python robustlink scf \
 	-s ${subsample_frac} \
 	-sn ${subsample_times}
 
-# # 2.
+# 2.
 # run leiden clustering for each (i, knn) 
-# get a list of samples
 echo "STEP2..."
 python robustlink metacell \
-	--mod $modx \
-	-i ${data_dir} \
-	-o ${out_dir} \
+	-i  ${input_dataset_rna} \
+	-o  ${out_dir} \
 	--knns $knn \
 	-sn ${subsample_times} \
 	-tag ${inputNameTag} \
 	-r ${resolutions}
 
-# 3.
+# # 3.
 # # correlation analysis (i, knn, r)
 echo "STEP3..."
 for (( i=0; i<${subsample_times}; i++ )); do
-	python robustlink corr_atac \
-		-modx $modx \
-		-mody $mody \
+	python robustlink corr_mc \
+		-modx ${modx_step3} \
+		-mody ${mody_step3} \
 		-tag $nameTag \
 		-isub $i \
 		--corr_type ${corr_type} \

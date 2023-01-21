@@ -3,15 +3,7 @@
 import logging
 import numpy as np
 import pandas as pd
-import subprocess as sp
 import os
-from scipy import sparse
-from scipy import stats
-import collections
-from concurrent.futures import TimeoutError
-
-# data structures
-GC_matrix = collections.namedtuple('GC_matrix', ['gene', 'cell', 'data'])
 
 def logcpm(counts):
     """
@@ -95,26 +87,6 @@ def import_single_textcol(fname, header=None, col=0):
 def export_single_textcol(fname, array):
     with open(fname, 'w') as f:
         f.write('\n'.join(array)+'\n')
-
-def load_gc_matrix(f_gene, f_cell, f_mat):
-    """
-    """
-    gene = import_single_textcol(f_gene)
-    cell = import_single_textcol(f_cell)
-    mat = sparse.load_npz(f_mat) 
-    assert (len(gene), len(cell)) == mat.shape
-    return GC_matrix(gene, cell, mat) 
-
-def load_gc_matrix_methylation(f_gene, f_cell, f_mat_mc, f_mat_c):
-    """
-    """
-    _gene = import_single_textcol(f_gene) 
-    _cell = import_single_textcol(f_cell)
-    _mat_mc = sparse.load_npz(f_mat_mc) 
-    _mat_c = sparse.load_npz(f_mat_c) 
-    gxc_raw = GC_matrix(_gene, _cell, 
-                              {'c': _mat_c, 'mc': _mat_mc})
-    return gxc_raw
 
 def combine_legends(axs_flat):
     """Combine legends from subplots (axs.flat)

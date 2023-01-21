@@ -12,6 +12,7 @@ import fbpca
 import sys
 import logging
 import fbpca
+import anndata
 
 from . import basic_utils
 from . import clst_utils
@@ -321,8 +322,7 @@ def core_scf_routine(mods_selected, features_selected, settings,
                     ps, drop_npcs,
                     cross_mod_distance_measure, knn, relaxation, n_cca,
                     npc,
-                    output_pcX_all, output_cells_all,
-                    output_imputed_data_format,
+                    output_pcX_all, 
                     ka_smooth=5,
                     save_knn=False,
                     output_knn_within="",
@@ -418,8 +418,10 @@ def core_scf_routine(mods_selected, features_selected, settings,
                     raise ValueError("Choose from correlation and cca")
                 X.append(imputed_xy)
         X = np.vstack(X) # cell (all mods) by gene (mod_y) 
-        # save X (imputed counts)
-        np.save(output_imputed_data_format.format(mod_y), X)
+
+        # # save X (imputed counts)
+        # np.save(output_imputed_data_format.format(mod_y), X)
+
         # PCA
         U, s, V = fbpca.pca(X, npc)
         del X
@@ -431,10 +433,15 @@ def core_scf_routine(mods_selected, features_selected, settings,
         
     pcX_all = np.hstack(pcX_all)
     # save pcX_all
-    np.save(output_pcX_all, pcX_all)
-    np.save(output_cells_all, cells_all)
-    logging.info("Saved output to: {}".format(output_pcX_all))
-    logging.info("Saved output to: {}".format(output_cells_all))
+    adata_pcX_all = anndata.AnnData(
+        X=pcX_all,
+        obs=pd.DataFrame(index=cells_all),
+
+    )
+    adata_pcX_all.write(output_pcX_all)
+    # np.save(output_pcX_all, pcX_all)
+    # np.save(output_cells_all, cells_all)
+    logging.info(f"Saved output to: {output_pcX_all}")
     return pcX_all, cells_all
 
 def clustering_umap_routine(pcX_all, cells_all, mods_selected, metas, 

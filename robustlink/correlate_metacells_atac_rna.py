@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from multiprocessing import Pool,cpu_count
+import os
 from scipy import sparse
-import pickle
 import argparse
 import logging
 import pandas as pd
 import numpy as np
+import anndata
 
-import utils
-import enhancer_gene_utils
+from robustlink import utils
+from robustlink import enhancer_gene_utils
 
 logger = utils.create_logger()
 
@@ -103,25 +103,13 @@ def wrap_corr_analysis_atac(
     output_corrs = './results/{}_{}_{{}}_{}_corrs.pkl'.format(input_name_tag, i_sub, corr_type)
 
     # input enh-gene tables, gene-by-cell, enhancer-by-cell matrices
-    input_enh_gene_table = './data/counts/enhancer_gene_pairs_1mbp.tsv' 
-    input_bundle_dirc = './data/counts'
-    bundle_fnames = (
-        'cell_rna.pkl',
-        'cell_atac.pkl',
-
-        'gene_rna.pkl',
-        'enh.pkl',
-
-        'mat_rna.pkl',
-        'mat_atac.pkl',
-    )
-
+    input_enh_gene_table = './newdata/enhancer_gene_pairs_1mbp.tsv' 
+    f_gene = './newdata/counts_gene_rna.h5ad' 
+    f_enh  = './newdata/counts_enh_atac.h5ad'
 
     # for knn_xx
     input_knn_dirc = './results'
-    input_modx_clsts = [
-        'clusterings_{}_{}_sub{}.tsv.gz'.format(mod_x, input_name_tag, i_sub),
-    ]
+    input_modx_clsts = [f'clusterings_{mod_x}_{input_name_tag}_sub{i_sub}.tsv.gz']
 
     # for knn_xy
     input_knn_xy = 'knn_across_{}_{}_{}.npz.{}.npz'.format(input_name_tag, mod_x, mod_y, i_sub) 
@@ -129,25 +117,24 @@ def wrap_corr_analysis_atac(
     input_knn_cells_yaxis = 'cells_{}_{}.npy.{}.npy'.format(mod_y, input_name_tag, i_sub)
 
     # # Load data 
-    # input_bundle
-    with utils.cd(input_bundle_dirc):
-        bundle = []
-        for fname in bundle_fnames:
-            #  save all as pickle file
-            with open(fname, "rb") as fh:
-                item = pickle.load(fh)
-            bundle.append(item)
-            logging.info("{}_{}_{}".format(type(item), item.shape, fname))
+    # enhancer-gene linkage
+    enhancer_gene_to_eval = pd.read_csv(input_enh_gene_table, sep='\t')
 
-    (common_modx_cells, common_mody_cells, 
-     common_genes, common_enhancer_regions,
-     X, Y, 
-    ) = bundle
+    # load count matrices
+    adata_gene = anndata.read(f_gene)
+    adata_enh  = anndata.read(f_enh)
+
+    common_modx_cells = adata_gene.var.index.values
+    common_genes = adata_gene.obs.index.values
+    X = adata_gene.X
+
+    common_mody_cells  = adata_enh.var.index.values 
+    common_enhancer_regions = adata_enh.obs # check if this works
+    Y = adata_enh.X
 
     # input knn networks 
     with utils.cd(input_knn_dirc):
         # for knn_xx 
-        # modx_clsts = pd.read_csv(input_modx_clsts, sep='\t',index_col=0)
         modx_clsts = pd.concat([
             pd.read_csv(fname, sep='\t',index_col=0)
             for fname in input_modx_clsts
@@ -162,9 +149,6 @@ def wrap_corr_analysis_atac(
                                           cell_cell_knn_yaxis.shape,
                                          )
                     )
-
-    # enhancer-gene linkage
-    enhancer_gene_to_eval = pd.read_csv(input_enh_gene_table, sep='\t')
 
     pipe_corr_analysis_atac(
         common_modx_cells, common_mody_cells,
