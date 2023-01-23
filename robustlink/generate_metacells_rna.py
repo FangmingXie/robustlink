@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from multiprocessing import Pool,cpu_count
 import argparse
 import os
 
@@ -31,7 +30,7 @@ def pipe_singlemod_clustering(
 
     for f_selected_cells, f_res in zip(flist_selected_cells, flist_res):
         print("processing {}".format(f_selected_cells))
-        selected_cells = np.load(f_selected_cells, allow_pickle=True)
+        selected_cells = np.loadtxt(f_selected_cells, dtype='str')
         # trim the matrix
         cg_mat_dense = gc_mat.data.T.todense()
         cg_mat_dense = cg_mat_dense[utils.get_index_from_array(gc_mat.cell, selected_cells)]
@@ -55,8 +54,9 @@ def pipe_singlemod_clustering(
 
 def wrapper_singlemod_clustering(
         f_ann,
-        out_dir, knns, subsample_times, 
+        out_dir, 
         input_name_tag,
+        subsample_times, 
         resolutions=[1],
     ):
     """
@@ -67,14 +67,12 @@ def wrapper_singlemod_clustering(
     shortname = shortname[:-len('.h5ad')]
 
     # input cell lists
-    flist_selected_cells = [os.path.join(out_dir, 
-            f'cells'       + f'_{input_name_tag.format(knn)}_{shortname}.{i_sub}.npy')
-            for knn, i_sub in itertools.product(knns, np.arange(subsample_times))
+    flist_selected_cells = [os.path.join(out_dir, f'{input_name_tag}_s{i_sub}_cells_{shortname}.txt')
+            for i_sub in np.arange(subsample_times)
         ]
     # output files
-    flist_res = [os.path.join(out_dir, 
-            f'clusterings' + f'_{input_name_tag.format(knn)}_{shortname}.{i_sub}.tsv.gz')
-            for knn, i_sub in itertools.product(knns, np.arange(subsample_times))
+    flist_res =            [os.path.join(out_dir, f'{input_name_tag}_s{i_sub}_metacells_{shortname}.tsv.gz')
+            for i_sub in np.arange(subsample_times)
         ]
 
     npc = 50
@@ -91,11 +89,10 @@ def wrapper_singlemod_clustering(
 def add_args(parser):
     """
     """
-    parser.add_argument("-i", "--input_dataset", help="input dataset; h5ad file", required=True)
+    parser.add_argument("-i", "--input_dataset", help="input dataset (rna); h5ad file", required=True)
     parser.add_argument("-o", "--out_dir", help="output result directory", required=True)
-    parser.add_argument("-ks", "--knns", help="a list of knns", nargs="+", required=True)
+    parser.add_argument("-tag", "--input_name_tag", help="input name tag from scfusion", required=True)
     parser.add_argument("-sn", "--subsample_times", help=">1", type=int, required=True)
-    parser.add_argument("-tag", "--input_name_tag", help="input_name_tag", required=True)
     parser.add_argument("-r", "--resolutions", nargs='+', help="Leiden clustering resolutions", required=True)
     return 
 
@@ -107,9 +104,8 @@ def main(args):
     dataset = args.input_dataset
     assert dataset.endswith('.h5ad')
     out_dir = args.out_dir
-    knns = np.array(args.knns).astype(int)
-    subsample_times = args.subsample_times
     input_name_tag = args.input_name_tag
+    subsample_times = args.subsample_times
     resolutions = args.resolutions
     if isinstance(resolutions, str):
         resolutions = [int(resolutions)]
@@ -118,7 +114,9 @@ def main(args):
 
     wrapper_singlemod_clustering(
         dataset,
-        out_dir, knns, subsample_times, input_name_tag,
+        out_dir, 
+        input_name_tag,
+        subsample_times, 
         resolutions=resolutions,
     )
 

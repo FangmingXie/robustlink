@@ -52,8 +52,8 @@ def add_args(parser):
              '''
     )
 
-    optional.add_argument("-on", "--outname", help='output files will contain this name', type=str, default='scf')
-    optional.add_argument("--ka_smooth", default=30)
+    optional.add_argument("-tag", "--nametag", help='output files will contain this tag', type=str, default='scfusion')
+    optional.add_argument("--ka_smooth", type=int, default=30)
     optional.add_argument("--knn", help=">1", type=int, default=30)
     optional.add_argument("-s", "--subsample_fraction", help="0~1", type=float, default=1)
     optional.add_argument("-sn", "--subsample_times", help=">1", type=int, default=1)
@@ -181,7 +181,7 @@ def main(args):
     knn = args.knn
 
     # # Configs  
-    name = args.outname
+    name = args.nametag
 
     mods_selected = [dtst[:-len('.h5ad')] for dtst in args.input_datasets if dtst.endswith('.h5ad')]
     assert len(mods_selected) == len(args.input_datasets)
@@ -251,14 +251,14 @@ def main(args):
     # subsampling a given fraction of cells from each modality
     for i in range(subsample_times):
         # # specifying output files (one set per subsampling)
-        output_pcX_all    = os.path.join(outdir, f'pcX_all_{name}'              + f'.{i}.h5ad') #  
+        output_pcX_all    = os.path.join(outdir, f'{name}_s{i}_fused_pc'              + f'.h5ad') #  
 
         # required for downsamp (8/7/2020)
-        output_cells      = os.path.join(outdir, f'cells_{name}_{{}}'           + f'.{i}.npy') # mod 
+        output_cells      = os.path.join(outdir, f'{name}_s{i}_cells_{{}}'            + f'.txt') # mod 
         # new required arguments (7/27/2020)
         save_knn = True  
-        output_knn_within = os.path.join(outdir, f'knn_within_{name}_{{}}'      + f'.{i}.npz') # mod 
-        output_knn_across = os.path.join(outdir, f'knn_across_{name}_{{}}_{{}}' + f'.{i}.npz') # modx, mody 
+        output_knn_within = os.path.join(outdir, f'{name}_s{i}_knn_within_{{}}'       + f'.npz') # mod 
+        output_knn_across = os.path.join(outdir, f'{name}_s{i}_knn_across_{{}}_{{}}'  + f'.npz') # modx, mody 
         # # output files end
 
         logging.info("Subsampling {}/{}".format(i+1, subsample_times))
@@ -268,7 +268,7 @@ def main(args):
         for mod in mods_selected:
             fout = output_cells.format(mod)
             cells_mod = metas_sub[mod].index.values
-            np.save(fout, cells_mod)
+            np.savetxt(fout, cells_mod, fmt='%s')
 
         # ## run SCF
         pcX_all, cells_all = SCF_utils.core_scf_routine(mods_selected, features_selected, settings, 

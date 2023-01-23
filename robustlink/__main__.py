@@ -13,12 +13,11 @@ def create_parser():
     """
     parser = argparse.ArgumentParser(prog='robustlink')
     subparsers = parser.add_subparsers()
-    #  choices=['scf', 'metacell', 'corr']
 
-    # scf 
-    scf = subparsers.add_parser('scf')
-    scf.set_defaults(cmd='scf')
-    SCF_main_repeat_subsampling.add_args(scf)
+    # scfusion 
+    scfusion = subparsers.add_parser('scfusion')
+    scfusion.set_defaults(cmd='scfusion')
+    SCF_main_repeat_subsampling.add_args(scfusion)
 
     # generat metacells rna
     metacell = subparsers.add_parser('metacell')
@@ -46,7 +45,7 @@ if __name__ == "__main__":
 
     if not hasattr(args, 'cmd'):
         raise ValueError("Wrong input, please run: `python robustlink --help`")
-    elif args.cmd == 'scf':
+    elif args.cmd == 'scfusion':
         SCF_main_repeat_subsampling.main(args)
     elif args.cmd == 'metacell':
         generate_metacells_rna.main(args)

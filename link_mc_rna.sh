@@ -1,78 +1,82 @@
 #!/bin/bash
-
-# 1. run_scf_repeatedly_ with different knn and downsampling
-# output: knn_xy matrices, and cells (i, knn)
+# 1. run scFusion with different downsampling
+# output: knn_xy matrices, and cells (i)
 
 # 2. within-modal clustering ...
-# for each cell set from (i, knn) -> run Leiden clustering with different resolution r
-# output: clustering result.tsv (i, knn, r): (i, knn) separate tables, r columns per table
+# for each cell set from (i) -> run Leiden clustering with different resolution (r)
+# output: clustering_results.tsv.gz (i, r): (i) separate tables, (r) columns per table
 
 # 3. correlation analysis ...
-# for each combination of (i, knn, r), run a correlation analysis
-# output: corrs.pkl (i, knn, r) 
+# for each combination of (i, r), run a correlation analysis
+# output: corrs.pkl (i, r) 
 
-date="211115" # still use the (finished) 1130 results
+## configurations
+# input and output
+date="230122" # still use the (finished) 1130 results
 out_dir="./results"
-data_dir="./newdata"
 
-modx='rna'
-mody='mc'
-input_datasets="profiles_hvgene_mc.h5ad profiles_hvgene_rna.h5ad"
-input_modalities="mc rna"
-feature_datasets="profiles_hvgene_mc.h5ad"
-input_dataset_rna="./newdata/profiles_hvgene_rna.h5ad"
-modx_step3="profiles_hvgene_rna"
-mody_step3="profiles_hvgene_mc"
+data_dir="./demodata"
+tolink="enhancer_gene_pairs_1mbp.tsv"
+countdata_gene="counts_gene_rna.h5ad"
+countdata_enh="counts_enh_mc.h5ad"
+fusiondata_rna="profiles_hvgene_rna.h5ad"
+fusiondata_mc="profiles_hvgene_mc.h5ad" 
 
-ka=30
-knn=30
+# parameters
+ka=30  # within modality k nearest neighbors
+knn=30 # across modality k nearest neighbors
 corr_type='spearmanr'
 subsample_frac=0.1 # take 10% of all the data -- faster for demo
 subsample_times=1
 resolutions=(10) # Leiden clustering resolutions used to generate metacells -- just 1 for demo
 num_metacell_limit=1001
+## end of configuration
 
-# generate (i, knn) knn_xy matrices
-# modalities
-# scf config template
-nameTag="mop_${modx}_${mody}_ka${ka}_knn${knn}_${date}" # need to make sure they are consistent with the config_template
-inputNameTag="mop_${modx}_${mody}_ka${ka}_knn{}_${date}"
-echo $modx, $mody, $ka, $knn
+# prepare
+scfusion_dir=${out_dir} # results of scFusion
+study_tag="link_rna_mc_ka${ka}_knn${knn}_${date}"
+echo $study_tag
 
 # 1.
-# # run SCF - repeatedly on subsets of cells (knn, i) -- can be made more general - each with a cell list to work with
+# # run SCF - repeatedly on subsets of cells (i) 
 echo "STEP1..."
-python robustlink scf \
-	-i ${data_dir} \
-	-id ${input_datasets} \
-	-im ${input_modalities} \
-	-fd ${feature_datasets} \
-	-o ${out_dir} \
-	-on ${nameTag} \
-	-s ${subsample_frac} \
+python robustlink scfusion \
+	-i  ${data_dir} \
+	-id ${fusiondata_mc} ${fusiondata_rna} \
+	-fd ${fusiondata_mc} \
+	-im "mc" "rna" \
+	-o  ${out_dir} \
+	-tag ${study_tag} \
+	--ka_smooth $ka \
+	--knn $knn \
+	-s  ${subsample_frac} \
 	-sn ${subsample_times}
 
 # 2.
-# run leiden clustering for each (i, knn) 
+# run leiden clustering for each (i) 
 echo "STEP2..."
 python robustlink metacell \
-	-i  ${input_dataset_rna} \
+	-i  "${data_dir}/${fusiondata_rna}" \
 	-o  ${out_dir} \
-	--knns $knn \
+	-tag ${study_tag} \
 	-sn ${subsample_times} \
-	-tag ${inputNameTag} \
-	-r ${resolutions}
+	-r  ${resolutions}
 
 # # 3.
-# # correlation analysis (i, knn, r)
+# # correlation analysis (i, r) - r is for resolution
 echo "STEP3..."
 for (( i=0; i<${subsample_times}; i++ )); do
 	python robustlink corr_mc \
-		-modx ${modx_step3} \
-		-mody ${mody_step3} \
-		-tag $nameTag \
+		--tolink         "${data_dir}/$tolink" \
+		--countdata_gene "${data_dir}/${countdata_gene}" \
+		--countdata_enh  "${data_dir}/${countdata_enh}" \
+		--scfusion_dir   ${scfusion_dir} \
+		--fusiondata_rna ${fusiondata_rna} \
+		--fusiondata_mc  ${fusiondata_mc} \
+		-tag ${study_tag} \
 		-isub $i \
 		--corr_type ${corr_type} \
+		-o ${out_dir} \
 		-n ${num_metacell_limit} \
 		-f
 done
