@@ -18,9 +18,9 @@ out_dir="./results"
 data_dir="./demodata"
 tolink="enhancer_gene_pairs_1mbp.tsv"
 countdata_gene="counts_gene_rna.h5ad"
-countdata_enh="counts_enh_mc.h5ad"
+countdata_enh="counts_enh_atac.h5ad"
 fusiondata_rna="profiles_hvgene_rna.h5ad"
-fusiondata_mc="profiles_hvgene_mc.h5ad" 
+fusiondata_atac="profiles_hvgene_atac.h5ad" 
 
 # parameters
 ka=30  # within modality k nearest neighbors
@@ -33,7 +33,7 @@ num_metacell_limit=1001
 ## end of configuration
 
 # prepare
-study_tag="link_rna_mc_ka${ka}_knn${knn}_${date}"
+study_tag="link_rna_atac_ka${ka}_knn${knn}_${date}"
 echo $study_tag
 scfusion_dir=${out_dir} # results of scFusion
 
@@ -42,9 +42,9 @@ scfusion_dir=${out_dir} # results of scFusion
 echo "STEP1..."
 python robustlink scfusion \
 	-i  ${data_dir} \
-	-id ${fusiondata_mc} ${fusiondata_rna} \
-	-fd ${fusiondata_mc} \
-	-im "mc" "rna" \
+	-id ${fusiondata_atac} ${fusiondata_rna} \
+	-fd ${fusiondata_atac} \
+	-im "atac" "rna" \
 	-o  ${out_dir} \
 	-tag ${study_tag} \
 	--ka_smooth $ka \
@@ -66,13 +66,13 @@ python robustlink metacell \
 # # correlation analysis (i, r) - r is for resolution
 echo "STEP3..."
 for (( i=0; i<${subsample_times}; i++ )); do
-	python robustlink corr_mc \
+	python robustlink corr_atac \
 		--tolink         "${data_dir}/$tolink" \
 		--countdata_gene "${data_dir}/${countdata_gene}" \
 		--countdata_enh  "${data_dir}/${countdata_enh}" \
 		--scfusion_dir   ${scfusion_dir} \
 		--fusiondata_rna ${fusiondata_rna} \
-		--fusiondata_mc  ${fusiondata_mc} \
+		--fusiondata_mc  ${fusiondata_atac} \
 		-tag ${study_tag} \
 		-isub $i \
 		--corr_type ${corr_type} \

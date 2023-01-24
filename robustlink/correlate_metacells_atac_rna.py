@@ -80,45 +80,48 @@ def pipe_corr_analysis_atac(
         logging.info("{} {}".format(gc_rna.shape, ec_atac.shape,))
 
         # corr analysis
-        output_corr = output_corrs.format(clst_col)
-        (to_correlate, corrs, corrs_shuffled, corrs_shuffled_cells) = enhancer_gene_utils.compute_enh_gene_corrs(
+        output = enhancer_gene_utils.compute_enh_gene_corrs(
             gc_rna, ec_atac, 
             common_genes, np.arange(len(ec_atac)),
             enhancer_gene_to_eval['gene'].values, 
-            enhancer_gene_to_eval['ens'].values, 
-            output_file=output_corr, corr_type=corr_type, chunksize=100000, verbose_level=0,
+            enhancer_gene_to_eval['enh'].values, 
+            output_file="", corr_type=corr_type, chunksize=100000, verbose_level=0,
             )
-    return
+
+        # save results
+        (to_correlate, corrs, corrs_shuffled, corrs_shuffled_cells) = output
+        res_corrs = enhancer_gene_to_eval[to_correlate].copy()
+        res_corrs['corr'] = corrs 
+        res_corrs['corr_shuff'] = corrs_shuffled
+        res_corrs['corr_shuff_cells'] = corrs_shuffled_cells
+        res_corrs.to_csv(output_corr, sep='\t', header=True, index=True)
+
+    return 
 
 def wrap_corr_analysis_atac(
-        mod_x, mod_y, 
-        input_name_tag, i_sub,
+        out_dir,
+        f_egpairs, f_gene, f_enh,
+        scfusion_dir, mod_x, mod_y, input_name_tag, i_sub,
         corr_type='pearsonr',
         force=False,
         num_metacell_limit=0,
     ):
     """
     """
-    # (i, k, --r)
-    output_corrs = './results/{}_{}_{{}}_{}_corrs.pkl'.format(input_name_tag, i_sub, corr_type)
-
-    # input enh-gene tables, gene-by-cell, enhancer-by-cell matrices
-    input_enh_gene_table = './newdata/enhancer_gene_pairs_1mbp.tsv' 
-    f_gene = './newdata/counts_gene_rna.h5ad' 
-    f_enh  = './newdata/counts_enh_atac.h5ad'
-
+    # output: (i, k, --r)
+    output_corrs = os.path.join(out_dir, f'{input_name_tag}_s{i_sub}_corr_{corr_type}_{{}}.tsv') 
+            
     # for knn_xx
-    input_knn_dirc = './results'
-    input_modx_clsts = [f'clusterings_{mod_x}_{input_name_tag}_sub{i_sub}.tsv.gz']
-
+    input_modx_clsts =       [os.path.join(scfusion_dir, f'{input_name_tag}_s{i_sub}_metacells_{mod_x}.tsv.gz')]
     # for knn_xy
-    input_knn_xy = 'knn_across_{}_{}_{}.npz.{}.npz'.format(input_name_tag, mod_x, mod_y, i_sub) 
-    input_knn_cells_xaxis = 'cells_{}_{}.npy.{}.npy'.format(mod_x, input_name_tag, i_sub)
-    input_knn_cells_yaxis = 'cells_{}_{}.npy.{}.npy'.format(mod_y, input_name_tag, i_sub)
+    input_knn_cells_xaxis  =  os.path.join(scfusion_dir, f'{input_name_tag}_s{i_sub}_cells_{mod_x}.txt')
+    input_knn_cells_yaxis  =  os.path.join(scfusion_dir, f'{input_name_tag}_s{i_sub}_cells_{mod_y}.txt')
+    input_knn_xy =            os.path.join(scfusion_dir, f'{input_name_tag}_s{i_sub}_knn_across_{mod_x}_{mod_y}.npz') 
+    ### end of file paths
 
     # # Load data 
-    # enhancer-gene linkage
-    enhancer_gene_to_eval = pd.read_csv(input_enh_gene_table, sep='\t')
+    # load enhancer-gene linkage
+    enhancer_gene_to_eval = pd.read_csv(f_egpairs, sep='\t')
 
     # load count matrices
     adata_gene = anndata.read(f_gene)
@@ -132,23 +135,22 @@ def wrap_corr_analysis_atac(
     common_enhancer_regions = adata_enh.obs # check if this works
     Y = adata_enh.X
 
-    # input knn networks 
-    with utils.cd(input_knn_dirc):
-        # for knn_xx 
-        modx_clsts = pd.concat([
-            pd.read_csv(fname, sep='\t',index_col=0)
-            for fname in input_modx_clsts
-        ], axis=1)
-        # for knn_xy 
-        knn_xy = sparse.load_npz(input_knn_xy)  
-        cell_cell_knn_xaxis = np.load(input_knn_cells_xaxis, allow_pickle=True)
-        cell_cell_knn_yaxis = np.load(input_knn_cells_yaxis, allow_pickle=True)
+    # load knn networks 
+    # for knn_xx 
+    modx_clsts = pd.concat([
+        pd.read_csv(fname, sep='\t',index_col=0)
+        for fname in input_modx_clsts
+    ], axis=1)
+    # for knn_xy 
+    knn_xy = sparse.load_npz(input_knn_xy)  
+    cell_cell_knn_xaxis = np.loadtxt(input_knn_cells_xaxis, dtype=str)
+    cell_cell_knn_yaxis = np.loadtxt(input_knn_cells_yaxis, dtype=str)
 
-        logging.info("{} {} {} {}".format(modx_clsts.shape, knn_xy.shape, 
-                                          cell_cell_knn_xaxis.shape, 
-                                          cell_cell_knn_yaxis.shape,
-                                         )
-                    )
+    logging.info("{} {} {} {}".format(modx_clsts.shape, knn_xy.shape, 
+                                        cell_cell_knn_xaxis.shape, 
+                                        cell_cell_knn_yaxis.shape,
+                                        )
+                )
 
     pipe_corr_analysis_atac(
         common_modx_cells, common_mody_cells,
@@ -167,10 +169,18 @@ def wrap_corr_analysis_atac(
 def add_args(parser):
     """
     """
-    parser.add_argument('-modx', '--mod_x', required=True, type=str)
-    parser.add_argument('-mody', '--mod_y', required=True, type=str)
-    parser.add_argument('-tag', '--input_name_tag', required=True, type=str)
+    parser.add_argument('--tolink',         required=True, type=str, help='a table of enhancer-gene pairs to be assessed for linkages')
+    parser.add_argument('--countdata_gene', required=True, type=str, help='gene by cell count matrix; h5ad format')
+    parser.add_argument('--countdata_enh',  required=True, type=str, help='enhancer by cell count matrix; h5ad format')
+    parser.add_argument('-o', '--out_dir',  required=True, type=str)
+
+    # to pull scFusion results (kNN graphs)
+    parser.add_argument('--scfusion_dir',  required=True)
+    parser.add_argument('--fusiondata_rna',  required=True, type=str, help='data for scFusion (h5ad file) -- need the filename to pull scFusion results')
+    parser.add_argument('--fusiondata_mc',   required=True, type=str, help='data for scFusion (h5ad file) -- need the filename to pull scFusion results')
+    parser.add_argument('-tag',  '--input_name_tag', required=True, type=str)
     parser.add_argument('-isub', '--i_sub', type=str, help="[0-9]")
+
     parser.add_argument('-ct', '--corr_type', choices=['pearsonr', 'spearmanr'],  
                                               default='pearsonr',
                                               help="choose from pearsonr or spearmanr")
@@ -181,8 +191,16 @@ def add_args(parser):
 def main(args):
     # output setting
     # run this with each combination of (i_sub, knn)
-    mod_x = args.mod_x
-    mod_y = args.mod_y
+    f_egpairs = args.tolink
+    f_gene = args.countdata_gene
+    f_enh  = args.countdata_enh
+
+    out_dir = args.out_dir
+    scfusion_dir = args.scfusion_dir
+
+    mod_x = os.path.basename(args.fusiondata_rna).replace('.h5ad', '')
+    mod_y = os.path.basename(args.fusiondata_mc ).replace('.h5ad', '')
+
     input_name_tag = args.input_name_tag
     i_sub = args.i_sub
     corr_type = args.corr_type
@@ -192,8 +210,9 @@ def main(args):
     logging.info(",".join([mod_x, mod_y, input_name_tag, str(i_sub), corr_type, str(force), str(num_metacell_limit)]))
 
     wrap_corr_analysis_atac(
-        mod_x, mod_y, 
-        input_name_tag, i_sub,
+        out_dir,
+        f_egpairs, f_gene, f_enh,
+        scfusion_dir, mod_x, mod_y, input_name_tag, i_sub,
         corr_type=corr_type,
         force=force,
         num_metacell_limit=num_metacell_limit,

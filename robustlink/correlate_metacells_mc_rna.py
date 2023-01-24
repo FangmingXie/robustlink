@@ -93,10 +93,33 @@ def pipe_corr_analysis_mc(
             gc_rna, ec_mccg, 
             common_genes, ec_mccg.index.values,
             enhancer_gene_to_eval['gene'].values, 
-            enhancer_gene_to_eval['ens'].values, 
-            output_file=output_corr, corr_type=corr_type, chunksize=100000, verbose_level=0,
+            enhancer_gene_to_eval['enh'].values, 
+            output_file="", corr_type=corr_type, chunksize=100000, verbose_level=0,
             shuff_enhs=shuff_enhs,
             )
+
+        # save results
+        if len(output) == 4:
+            (to_correlate, corrs, corrs_shuffled, corrs_shuffled_cells) = output
+            res_corrs = enhancer_gene_to_eval[to_correlate].copy()
+            res_corrs['corr'] = corrs 
+            res_corrs['corr_shuff'] = corrs_shuffled
+            res_corrs['corr_shuff_cells'] = corrs_shuffled_cells
+            res_corrs.to_csv(output_corr, sep='\t', header=True, index=True)
+
+        elif len(output) == 6:
+            (to_correlate, corrs, corrs_shuffled, corrs_shuffled_cells, 
+                corrs_shuffled_enhs,
+                corrs_shuffled_enhs_bygroups,
+                ) = output
+            res_corrs = enhancer_gene_to_eval[to_correlate].copy()
+            res_corrs['corr'] = corrs 
+            res_corrs['corr_shuff'] = corrs_shuffled
+            res_corrs['corr_shuff_cells'] = corrs_shuffled_cells
+            res_corrs['corr_shuff_enhs'] = corrs_shuffled_enhs
+            res_corrs['corr_shuff_enhs_bygroups'] = corrs_shuffled_enhs_bygroups
+            res_corrs.to_csv(output_corr, sep='\t', header=True, index=True)
+
     return output # last of the kind
 
 def wrap_corr_analysis_mc(
@@ -114,7 +137,7 @@ def wrap_corr_analysis_mc(
     """
     # output: (i, k, --r)
     if save_todisk:
-        output_corrs = os.path.join(out_dir, f'{input_name_tag}_s{i_sub}_corr_{corr_type}_{{}}.pkl') 
+        output_corrs = os.path.join(out_dir, f'{input_name_tag}_s{i_sub}_corr_{corr_type}_{{}}.tsv') 
                               # cluster resolution to be filled in
     else:
         output_corrs = ''
