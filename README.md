@@ -83,6 +83,7 @@ usage: python robustlink scfusion [-h] -i DATA_DIR -o OUTDIR -id INPUT_DATASETS 
                                   [--ka_smooth KA_SMOOTH] [--knn KNN] [-s SUBSAMPLE_FRACTION] [-sn SUBSAMPLE_TIMES]
                                   [--relaxation RELAXATION] [--drop_npcs DROP_NPCS]
                                   [--smoothing_fractions SMOOTHING_FRACTIONS [SMOOTHING_FRACTIONS ...]] [--num_pcs NUM_PCS]
+...
 ```
 
 ```
@@ -91,6 +92,7 @@ python robustlink metacell --help
 ```
 usage: python robustlink metacell [-h] -i INPUT_DATASET -o OUT_DIR -tag INPUT_NAME_TAG -sn SUBSAMPLE_TIMES -r RESOLUTIONS
                                   [RESOLUTIONS ...]
+...                                  
 ```
 
 ```
@@ -100,4 +102,5 @@ python robustlink corr_mc --help
 usage: python robustlink corr_mc [-h] --tolink TOLINK --countdata_gene COUNTDATA_GENE --countdata_enh COUNTDATA_ENH -o OUT_DIR
                                  --scfusion_dir SCFUSION_DIR --fusiondata_rna FUSIONDATA_RNA --fusiondata_mc FUSIONDATA_MC -tag
                                  INPUT_NAME_TAG [-isub I_SUB] [-ct {pearsonr,spearmanr}] [-f] [-n NUM_METACELL_LIMIT]
+...
 ```
