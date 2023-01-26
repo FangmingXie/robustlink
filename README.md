@@ -20,10 +20,11 @@ Run the following command to clone this repo and install dependencies.
 ```bash
 # clone this repo
 git clone https://github.com/FangmingXie/robustlink.git
-# create a conda env and install dependancies using the provided `env.yml` file.
+# setting up the environment and install dependancies using the provided `env.yml` file.
 cd ./robustlink
 conda env create -f env.yml
 conda activate env_robustlink 
+# install this package using pip
 pip install .
 ```
 
