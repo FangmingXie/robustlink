@@ -48,7 +48,7 @@ cat README_demodata.txt
 ```
 This will generate a result folder `demo_res` that includes integrated datasets, metacells, and correlations between enhancers and genes for mC-RNA and ATAC-RNA, respectively. For speed, this demo only randomly samples 10% cells from each dataset. However, the users can readily make the change to use more cells by tuning the `-s/--subsample_frac` argument. 
 
-3. To visualize the results, run through the `visualize_links.ipynb` notebook, which generates visualizations with a few simple commands backed by our customized `CorrRes` class. See section *Visualization* below for more details.
+3. To visualize the results, run through the `visualize_links.ipynb` notebook, which generates visualizations with a few simple commands backed by our customized `CorrRes` class. See section **Visualization** below for more details.
 ![](./doc/plot_dist_mc.png)
 ![](./doc/plot_dist_atac.png)
 
@@ -108,7 +108,39 @@ usage: python robustlink corr_mc [-h] --tolink TOLINK --countdata_gene COUNTDATA
 
 ### Visualization ###
 
+We designed our visualization module to be simple and flexible to use at the same time. Once setting up the `CorrRes` object, it takes one line to generate many visualizations. 
+
+```
+# corr_res_mc is a CorrRes object generated as in visualize_links.ipynb
+corr_res_mc.plot_corr_vs_dist()
+```
+![](./doc/plot_corr_dist_mc.png)
+
+```
+corr_res_atac.plot_corr_vs_dist()
+```
+![](./doc/plot_corr_dist_atac.png)
+
+```
+fig, ax = plt.subplots(figsize=(6,4))
+corr_res_mc  .plot_corr_vs_dist(ax)
+corr_res_atac.plot_corr_vs_dist(ax)
+plt.show()
+```
 ![](./doc/plot_corr_dist_both.png)
+
+```
+corr_res_mc.plot_corr_vs_dist()
+corr_res_atac.plot_corr_vs_dist()
+```
 ![](./doc/plot_dist_mc.png)
 ![](./doc/plot_dist_atac.png)
+
+
+```
+fig, ax = plt.subplots(figsize=(6,4))
+corr_res_mc  .plot_corr_vs_dist(ax)
+corr_res_atac.plot_corr_vs_dist(ax)
+plt.show()
+```
 ![](./doc/plot_sig_dist.png)
