@@ -32,7 +32,7 @@ pip install .
 
 ### Demo ###
 
-1. The demo data, which includes mC, ATAC, and RNA profiles for >70,000 neurons from mouse primary motor cortex, can be downloaded using [this](https://drive.google.com/file/d/1FHjSn4MuNz7nxE7h_Ib8oiJcjm8XZaOs/view?usp=sharing) link. Once downloaded, decompress it with the following command. For detailed description of data files, see `README_demodata.txt`.
+1. The demo data, which includes mC, ATAC, and RNA profiles for >70,000 neurons from mouse primary motor cortex, can be downloaded with [this](https://drive.google.com/file/d/1JzP6cPTWFMj4vj5-Ie8QWBl8rpfnJa37/view?usp=sharing) link. Once downloaded, decompress it with the following command. For detailed description of data files, see `README_demodata.txt`.
 ```bash
 # decompress the data
 tar -zxvf demodata.tar.gz
@@ -62,4 +62,27 @@ In addition, you need annotation file tables (.tsv):
 - an enhancer list
 - a enhancer-gene pair list (e.g. all pairs within ~1Mbp)
 
-### API ###
+### CLI ###
+On the top level, there are three main functions to choose from: 
+- `scfusion`: integrate datasets (transcriptomes and epigenomes)
+- `metacell`: generate metacells (cell clusters) that are shared across datasets
+- `corr_mc` or `corr_atac`: correlate enhancer epigenetic signals (mc or atac) with gene expression 
+```
+python robustlink --help
+
+usage: python robustlink [-h] {scfusion,metacell,corr_mc,corr_atac} ...
+
+positional arguments:
+  {scfusion,metacell,corr_mc,corr_atac}
+
+```
+
+```
+python robustlink scfusion --help
+
+usage: python robustlink scfusion [-h] -i DATA_DIR -o OUTDIR -id INPUT_DATASETS [INPUT_DATASETS ...] -im INPUT_MODALITIES
+                                  [INPUT_MODALITIES ...] -fd FEATURE_DATASETS [FEATURE_DATASETS ...] [-tag NAMETAG]
+                                  [--ka_smooth KA_SMOOTH] [--knn KNN] [-s SUBSAMPLE_FRACTION] [-sn SUBSAMPLE_TIMES]
+                                  [--relaxation RELAXATION] [--drop_npcs DROP_NPCS]
+                                  [--smoothing_fractions SMOOTHING_FRACTIONS [SMOOTHING_FRACTIONS ...]] [--num_pcs NUM_PCS]
+```

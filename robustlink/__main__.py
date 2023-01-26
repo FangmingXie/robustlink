@@ -11,7 +11,7 @@ from robustlink import correlate_metacells_atac_rna
 def create_parser():
     """
     """
-    parser = argparse.ArgumentParser(prog='robustlink')
+    parser = argparse.ArgumentParser(prog='python robustlink')
     subparsers = parser.add_subparsers()
 
     # scfusion 
