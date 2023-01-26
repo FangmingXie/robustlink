@@ -1,7 +1,7 @@
 # Robust enhancer-gene association prediction using single cell transcriptomes and epigenomes
 
 
-This repository hosts customized scripts for the analysis of enhancer-gene associations in neurons from mouse primary motor cortex.
+This repository hosts the package `robustlink`, a tool that integrates single-cell transcriptomes (scRNA-seq) and epigenomes (snATAC-seq and snmC-seq) and identify robust associations between cis-regulatory elements (enhancers) and genes. 
 
 Reference:
 - [Xie, Armand et al. 2021; Robust enhancer-gene regulation identified by single-cell transcriptomes and epigenomes](https://www.biorxiv.org/content/10.1101/2021.10.25.465795v1)
@@ -18,49 +18,45 @@ We recommend users to use a [conda environment](https://docs.conda.io/projects/c
 
 Run the following command to clone this repo and install dependencies.
 ```bash
-
 # clone this repo
-git clone https://github.com/mukamel-lab/SingleCellFusion_EnhancerPaper.git
-
-# create an conda env and install dependancies.
-cd SingleCellFusion_EnhancerPaper
+git clone https://github.com/FangmingXie/robustlink.git
+# create a conda env and install dependancies using the provided `env.yml` file.
+cd ./robustlink
 conda env create -f env.yml
+conda activate env_robustlink 
+pip install .
 ```
-The installation of the conda environment takes less than 20 minutes. After installation, activate the environment using
-```bash
-conda activate env_enhancer
-```
+
+**API**
+
 
 **Demo**
 
-First download demo data, which includes mC, ATAC, and RNA profiles for >70,000 neurons from mouse primary motor cortex:
-- Use [this](https://drive.google.com/file/d/1FHjSn4MuNz7nxE7h_Ib8oiJcjm8XZaOs/view?usp=sharing) link to download.
+The demo data, which includes mC, ATAC, and RNA profiles for >70,000 neurons from mouse primary motor cortex, can be downloaded using [this](https://drive.google.com/file/d/1FHjSn4MuNz7nxE7h_Ib8oiJcjm8XZaOs/view?usp=sharing) link.
 
-Put `data.tar.gz` under the `demo` directory of this repo, and decompress it:
+Decompress `demodata.tar.gz` with the following command. For detailed description of data files, see `README_dataset.txt` after decompression. 
 ```bash
-mv data.tar.gz ./demo
 tar -zxvf data.tar.gz 
 ```
 
-Now you can run our enhancer-gene association analysis using a single command:
+Now you can run through the entire enhancer-gene association analysis using a single command:
 ```
-cd demo
- ./run_pipe_mc.sh & ./run_pipe_atac.sh
+ ./link_mc_rna.sh & ./link_atac_rna.sh
 ```
-This will generate a result folder that includes metacells, kNN graphs between modalities, and the correlations of all enhancer-gene pairs within 1Mb for mC-RNA and ATAC-RNA, respectively. For speed, this demo uses only 10% of cells for each dataset based on random sampling.
+This will generate a result folder `demo_res` that includes integrated datasets, metacells, and correlations between enhancers and genes for mC-RNA and ATAC-RNA, respectively. For speed, this demo only randomly samples 10% cells from each dataset. 
 
-To visualize the results, then run through the `visualize_correlation.ipynb` jupyter notebook. This will generate results that recapitulate the key findings of the paper.
-
+To visualize the results, then run through the `visualize_links.ipynb` jupyter notebook. This will readily generate visualizations with single-commands.
 ![](./doc/result_dist.png)
 
 The whole demo takes about 5 minutes to run through.
 
-**Run your data**
+**Prepare your data**
+You need to prepare your data as in the demo in `.h5ad` ([AnnData](https://anndata.readthedocs.io/en/latest/)) format. Specifically, for each dataset you need:
+- `counts_yourdataset.h5ad`: a count matrix (cell-by-gene for RNA; cell-by-enhancer for mC and ATAC) of the single-cell transcriptome/epigenome data.
+- `gene_profiles_yourdataaset.h5ad`: a gene-level feature matrix (average gene-level DNA methylation or ATAC signals for epigenome data). This information is not directly used for enhancer-gene association, but only to integrate cells from different datasets to identify cross-dataset metacells.
 
-You need to replace our example data folder `demo/data` with your own data. As in `demo/data`, you would need:
+In addition, you need annotation file tables (.tsv):
 - a gene list
 - an enhancer list
-- a list of enhancer-gene pairs to examine (default uses all pairs within 1Mbp)
-- count matrices (cell-by-gene for RNA; cell-by-enhancer for mC and ATAC)
-- feature matrices (cell-by-gene for RNA, mC and ATAC; preprocessed and normalized; this is used to generate metacells)
+- a list of enhancer-gene pairs to examine (all pairs within ~1Mbp)
 
