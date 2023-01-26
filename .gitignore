@@ -4,6 +4,7 @@ data/
 newdata/
 demodata/
 demo_res/
+demodata.tar.gz
 results/
 *log*
 
