@@ -20,10 +20,12 @@ Run the following command to clone this repo and install dependencies.
 ```bash
 # clone this repo
 git clone https://github.com/FangmingXie/robustlink.git
+
 # setting up the environment and install dependancies using the provided `env.yml` file.
 cd ./robustlink
 conda env create -f env.yml
 conda activate env_robustlink 
+
 # install this package using pip
 pip install .
 ```
@@ -42,16 +44,16 @@ cat README_demodata.txt
 ```
 This will generate a result folder `demo_res` that includes integrated datasets, metacells, and correlations between enhancers and genes for mC-RNA and ATAC-RNA, respectively. For speed, this demo only randomly samples 10% cells from each dataset. However, the users can readily make the change to use more cells by tuning the `-s/--subsample_frac` argument. 
 
-3. To visualize the results, then run through the `visualize_links.ipynb` jupyter notebook, which generates visualizations with few simple commands backed by our customized `CorrRes` class.
-![](./doc/result_dist.png).
+3. To visualize the results, run through the `visualize_links.ipynb` notebook, which generates visualizations with a few simple commands backed by our customized `CorrRes` class.
+![](./doc/result_dist.png)
 
 *The whole demo takes about 5 minutes to run through.*
 
 ### Prepare your data ###
 
 You need to prepare your data as in the demo in `.h5ad` ([AnnData](https://anndata.readthedocs.io/en/latest/)) format. Specifically, for each dataset you need:
-- `counts_yourdataset.h5ad`: a count matrix (cell-by-gene for RNA; cell-by-enhancer for mC and ATAC) of the single-cell transcriptome/epigenome data.
-- `gene_profiles_yourdataaset.h5ad`: a gene-level feature matrix (average gene-level DNA methylation or ATAC signals for epigenome data). This information is not directly used for enhancer-gene association, but only to integrate cells from different datasets to identify cross-dataset metacells.
+- `counts_${dataset}.h5ad`: a count matrix (cell-by-gene for RNA; cell-by-enhancer for mC and ATAC) of the single-cell transcriptome/epigenome data.
+- `gene_profiles_${dataset}.h5ad`: a gene-level feature matrix (average gene-level DNA methylation or ATAC signals for epigenome data). This information is not directly used for enhancer-gene association, but only to integrate cells from different datasets to identify cross-dataset metacells.
 
 In addition, you need annotation file tables (.tsv):
 - a gene list
