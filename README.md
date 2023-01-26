@@ -68,19 +68,12 @@ On the top level, there are three main functions to choose from:
 - `metacell`: generate metacells (cell clusters) that are shared across datasets
 - `corr_mc` or `corr_atac`: correlate enhancer epigenetic signals (mc or atac) with gene expression 
 
-
+Run ```python robustlink --help``` will show the available secondary options to choose from:
 ```
-python robustlink --help
-```
-
- ```
 usage: python robustlink [-h] {scfusion,metacell,corr_mc,corr_atac} ...
-
-positional arguments:
-  {scfusion,metacell,corr_mc,corr_atac}
-
 ```
 
+Each option requires specific input arguments that can be revealed by their own `--help` function. 
 ```
 python robustlink scfusion --help
 ```
@@ -102,6 +95,8 @@ usage: python robustlink metacell [-h] -i INPUT_DATASET -o OUT_DIR -tag INPUT_NA
 
 ```
 python robustlink corr_mc --help
+```
+```
 usage: python robustlink corr_mc [-h] --tolink TOLINK --countdata_gene COUNTDATA_GENE --countdata_enh COUNTDATA_ENH -o OUT_DIR
                                  --scfusion_dir SCFUSION_DIR --fusiondata_rna FUSIONDATA_RNA --fusiondata_mc FUSIONDATA_MC -tag
                                  INPUT_NAME_TAG [-isub I_SUB] [-ct {pearsonr,spearmanr}] [-f] [-n NUM_METACELL_LIMIT]
