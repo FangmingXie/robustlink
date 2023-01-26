@@ -108,7 +108,7 @@ usage: python robustlink corr_mc [-h] --tolink TOLINK --countdata_gene COUNTDATA
 
 ### Visualization ###
 
-We designed the visualization module to be simple and flexible to use at the same time. Once setting up the `CorrRes` object, it takes one line to generate visualization. 
+We designed the visualization module to be simple and flexible to use at the same time. Once setting up the `CorrRes` object, it takes one line to generate visualizations. Below are a few examples.
 
 ```
 # corr_res_mc is a CorrRes object generated as in visualize_links.ipynb
@@ -132,7 +132,7 @@ corr_res_atac.plot_corr_vs_dist()
 ![](./doc/plot_corr_dist_atac.png)
 
 
-With a few minor changes as below, we can combine the two plots above into a single one, and control figure sizes and so on:
+With a few minor changes, we can combine the two plots above into a single one, and control other figure properties as you like using the `axes` handles from [matplotlib](https://matplotlib.org/stable/index.html).
 ```
 fig, ax = plt.subplots(figsize=(6,4))
 corr_res_mc  .plot_corr_vs_dist(ax)
@@ -141,7 +141,7 @@ plt.show()
 ```
 ![](./doc/plot_corr_dist_both.png)
 
-Below is a more complex example of how we can combine subplots using the `axes` handles from the ![matplotlib](https://matplotlib.org/stable/index.html)
+Below is a more complex example of how we can combine subplots.
 ```
 cols = [
     'frac_tp', 
