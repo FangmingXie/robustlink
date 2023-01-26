@@ -73,7 +73,7 @@ On the top level, there are three main functions to choose from:
 python robustlink --help
 ```
 
-> ```
+ ```
 usage: python robustlink [-h] {scfusion,metacell,corr_mc,corr_atac} ...
 
 positional arguments:
