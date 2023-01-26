@@ -12,9 +12,7 @@
 
 ## configurations
 # input and output
-date="230122" # still use the (finished) 1130 results
-out_dir="./results"
-
+out_dir="./demo_res"
 data_dir="./demodata"
 tolink="enhancer_gene_pairs_1mbp.tsv"
 countdata_gene="counts_gene_rna.h5ad"
@@ -33,7 +31,7 @@ num_metacell_limit=1001
 ## end of configuration
 
 # prepare
-study_tag="link_rna_mc_ka${ka}_knn${knn}_${date}"
+study_tag="link_rna_mc_ka${ka}_knn${knn}"
 echo $study_tag
 scfusion_dir=${out_dir} # results of scFusion
 
