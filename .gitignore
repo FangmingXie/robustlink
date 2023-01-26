@@ -6,6 +6,7 @@ demodata/
 demo_res/
 demodata.tar.gz
 results/
+test/
 *log*
 
 # Byte-compiled / optimized / DLL files

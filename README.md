@@ -48,8 +48,9 @@ cat README_demodata.txt
 ```
 This will generate a result folder `demo_res` that includes integrated datasets, metacells, and correlations between enhancers and genes for mC-RNA and ATAC-RNA, respectively. For speed, this demo only randomly samples 10% cells from each dataset. However, the users can readily make the change to use more cells by tuning the `-s/--subsample_frac` argument. 
 
-3. To visualize the results, run through the `visualize_links.ipynb` notebook, which generates visualizations with a few simple commands backed by our customized `CorrRes` class.
-![](./doc/result_dist.png)
+3. To visualize the results, run through the `visualize_links.ipynb` notebook, which generates visualizations with a few simple commands backed by our customized `CorrRes` class. See section *Visualization* below for more details.
+![](./doc/plot_dist_mc.png)
+![](./doc/plot_dist_atac.png)
 
 ### Prepare your data ###
 
@@ -104,3 +105,10 @@ usage: python robustlink corr_mc [-h] --tolink TOLINK --countdata_gene COUNTDATA
                                  INPUT_NAME_TAG [-isub I_SUB] [-ct {pearsonr,spearmanr}] [-f] [-n NUM_METACELL_LIMIT]
 ...
 ```
+
+### Visualization ###
+
+![](./doc/plot_corr_dist_both.png)
+![](./doc/plot_dist_mc.png)
+![](./doc/plot_dist_atac.png)
+![](./doc/plot_sig_dist.png)
