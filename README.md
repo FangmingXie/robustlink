@@ -34,9 +34,13 @@ pip install .
 
 1. The demo data, which includes mC, ATAC, and RNA profiles for >70,000 neurons from mouse primary motor cortex, can be downloaded using [this](https://drive.google.com/file/d/1FHjSn4MuNz7nxE7h_Ib8oiJcjm8XZaOs/view?usp=sharing) link. Once downloaded, decompress it with the following command. For detailed description of data files, see `README_demodata.txt`.
 ```bash
+# decompress the data
 tar -zxvf demodata.tar.gz
+# show the data specs
 cat README_demodata.txt 
 ```
+
+*After the data is in place. The rest of the demo takes about 5 minutes to run through.*
 
 2. With the `/demodata` in place, you can run through the entire enhancer-gene association analysis with the following command:
 ```
@@ -47,8 +51,6 @@ This will generate a result folder `demo_res` that includes integrated datasets,
 3. To visualize the results, run through the `visualize_links.ipynb` notebook, which generates visualizations with a few simple commands backed by our customized `CorrRes` class.
 ![](./doc/result_dist.png)
 
-*The whole demo takes about 5 minutes to run through.*
-
 ### Prepare your data ###
 
 You need to prepare your data as in the demo in `.h5ad` ([AnnData](https://anndata.readthedocs.io/en/latest/)) format. Specifically, for each dataset you need:
@@ -58,6 +60,6 @@ You need to prepare your data as in the demo in `.h5ad` ([AnnData](https://annda
 In addition, you need annotation file tables (.tsv):
 - a gene list
 - an enhancer list
-- a list of enhancer-gene pairs to examine (all pairs within ~1Mbp)
+- a enhancer-gene pair list (e.g. all pairs within ~1Mbp)
 
 ### API ###
