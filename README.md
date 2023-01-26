@@ -108,19 +108,31 @@ usage: python robustlink corr_mc [-h] --tolink TOLINK --countdata_gene COUNTDATA
 
 ### Visualization ###
 
-We designed our visualization module to be simple and flexible to use at the same time. Once setting up the `CorrRes` object, it takes one line to generate many visualizations. 
+We designed the visualization module to be simple and flexible to use at the same time. Once setting up the `CorrRes` object, it takes one line to generate visualization. 
 
 ```
 # corr_res_mc is a CorrRes object generated as in visualize_links.ipynb
 corr_res_mc.plot_corr_vs_dist()
 ```
-![](./doc/plot_corr_dist_mc.png = x50)
+![](./doc/plot_dist_mc.png)
+
+```
+corr_res_atac.plot_corr_vs_dist()
+```
+![](./doc/plot_dist_atac.png)
+
+```
+corr_res_mc.plot_corr_vs_dist()
+```
+![](./doc/plot_corr_dist_mc.png)
 
 ```
 corr_res_atac.plot_corr_vs_dist()
 ```
 ![](./doc/plot_corr_dist_atac.png)
 
+
+With a few minor changes as below, we can combine the two plots above into a single one, and control figure sizes and so on:
 ```
 fig, ax = plt.subplots(figsize=(6,4))
 corr_res_mc  .plot_corr_vs_dist(ax)
@@ -129,18 +141,23 @@ plt.show()
 ```
 ![](./doc/plot_corr_dist_both.png)
 
+Below is a more complex example of how we can combine subplots using the `axes` handles from the ![matplotlib](https://matplotlib.org/stable/index.html)
 ```
-corr_res_mc.plot_corr_vs_dist()
-corr_res_atac.plot_corr_vs_dist()
-```
-![](./doc/plot_dist_mc.png)
-![](./doc/plot_dist_atac.png)
+cols = [
+    'frac_tp', 
+    'sig_frac_tp', 
+    'num_pos',
+    'sig_num_pos',
+]
 
-
-```
-fig, ax = plt.subplots(figsize=(6,4))
-corr_res_mc  .plot_corr_vs_dist(ax)
-corr_res_atac.plot_corr_vs_dist(ax)
+fig, axs = plt.subplots(2, 2, figsize=(8*2,5*2), sharex=False, sharey='row')
+for ax, col in zip(axs.flat, cols): 
+    corr_res_mc  .plot_dist_dep(col, 'linked',     ax=ax)
+    corr_res_mc  .plot_dist_dep(col, 'correlated', ax=ax)
+    corr_res_atac.plot_dist_dep(col, 'linked',     ax=ax)
+    corr_res_atac.plot_dist_dep(col, 'correlated', ax=ax)
+axs[0,1].legend(bbox_to_anchor=(1,1))
+fig.tight_layout()
 plt.show()
 ```
 ![](./doc/plot_sig_dist.png)
