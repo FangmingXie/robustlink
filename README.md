@@ -30,23 +30,22 @@ pip install .
 
 ### Demo ###
 
-The demo data, which includes mC, ATAC, and RNA profiles for >70,000 neurons from mouse primary motor cortex, can be downloaded using [this](https://drive.google.com/file/d/1FHjSn4MuNz7nxE7h_Ib8oiJcjm8XZaOs/view?usp=sharing) link.
-
-Decompress `demodata.tar.gz` with the following command. For detailed description of data files, see `README_dataset.txt` after decompression. 
+1. The demo data, which includes mC, ATAC, and RNA profiles for >70,000 neurons from mouse primary motor cortex, can be downloaded using [this](https://drive.google.com/file/d/1FHjSn4MuNz7nxE7h_Ib8oiJcjm8XZaOs/view?usp=sharing) link. Once downloaded, decompress it with the following command. For detailed description of data files, see `README_demodata.txt`.
 ```bash
-tar -zxvf data.tar.gz 
+tar -zxvf demodata.tar.gz
+cat README_demodata.txt 
 ```
 
-Now you can run through the entire enhancer-gene association analysis using a single command:
+2. With the `/demodata` in place, you can run through the entire enhancer-gene association analysis with the following command:
 ```
  ./link_mc_rna.sh & ./link_atac_rna.sh
 ```
-This will generate a result folder `demo_res` that includes integrated datasets, metacells, and correlations between enhancers and genes for mC-RNA and ATAC-RNA, respectively. For speed, this demo only randomly samples 10% cells from each dataset. 
+This will generate a result folder `demo_res` that includes integrated datasets, metacells, and correlations between enhancers and genes for mC-RNA and ATAC-RNA, respectively. For speed, this demo only randomly samples 10% cells from each dataset. However, the users can readily make the change to use more cells by tuning the `-s/--subsample_frac` argument. 
 
-To visualize the results, then run through the `visualize_links.ipynb` jupyter notebook. This will readily generate visualizations with single-commands.
-![](./doc/result_dist.png)
+3. To visualize the results, then run through the `visualize_links.ipynb` jupyter notebook, which generates visualizations with few simple commands backed by our customized `CorrRes` class.
+![](./doc/result_dist.png).
 
-The whole demo takes about 5 minutes to run through.
+*The whole demo takes about 5 minutes to run through.*
 
 ### Prepare your data ###
 
