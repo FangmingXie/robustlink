@@ -114,7 +114,7 @@ We designed our visualization module to be simple and flexible to use at the sam
 # corr_res_mc is a CorrRes object generated as in visualize_links.ipynb
 corr_res_mc.plot_corr_vs_dist()
 ```
-![](./doc/plot_corr_dist_mc.png)
+![](./doc/plot_corr_dist_mc.png = x50)
 
 ```
 corr_res_atac.plot_corr_vs_dist()
