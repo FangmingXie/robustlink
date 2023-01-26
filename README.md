@@ -9,7 +9,7 @@ Reference:
 Correspondence: [Fangming Xie](mailto:f7xie@ucsd.edu) and [Eran A. Mukamel](mailto:emukamel@ucsd.edu)
 
 # Getting started
-**System requirements**
+### System requirements ###
 
 This package is tested on a Ubuntu 18.04.6 LTS (Bionic Beaver) server. However, we expect it can be operated under a wide range of systems.
 We recommend users to use a [conda environment](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html) to install dependencies. This requires users to pre-install [Anaconda](https://www.anaconda.com/products/individual).
@@ -27,10 +27,7 @@ conda activate env_robustlink
 pip install .
 ```
 
-**API**
-
-
-**Demo**
+### Demo ###
 
 The demo data, which includes mC, ATAC, and RNA profiles for >70,000 neurons from mouse primary motor cortex, can be downloaded using [this](https://drive.google.com/file/d/1FHjSn4MuNz7nxE7h_Ib8oiJcjm8XZaOs/view?usp=sharing) link.
 
@@ -50,7 +47,7 @@ To visualize the results, then run through the `visualize_links.ipynb` jupyter n
 
 The whole demo takes about 5 minutes to run through.
 
-**Prepare your data**
+### Prepare your data ###
 
 You need to prepare your data as in the demo in `.h5ad` ([AnnData](https://anndata.readthedocs.io/en/latest/)) format. Specifically, for each dataset you need:
 - `counts_yourdataset.h5ad`: a count matrix (cell-by-gene for RNA; cell-by-enhancer for mC and ATAC) of the single-cell transcriptome/epigenome data.
@@ -61,3 +58,4 @@ In addition, you need annotation file tables (.tsv):
 - an enhancer list
 - a list of enhancer-gene pairs to examine (all pairs within ~1Mbp)
 
+### API ###
