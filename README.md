@@ -14,7 +14,7 @@ Correspondence: [Fangming Xie](mailto:f7xie@ucsd.edu) and [Eran A. Mukamel](mail
 This package is tested on a Ubuntu 18.04.6 LTS (Bionic Beaver) server. However, we expect it can be operated under a wide range of systems.
 We recommend users to use a [conda environment](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html) to install dependencies. This requires users to pre-install [Anaconda](https://www.anaconda.com/products/individual).
 
-**Installation**
+### Installation ###
 
 Run the following command to clone this repo and install dependencies.
 ```bash
@@ -51,6 +51,7 @@ To visualize the results, then run through the `visualize_links.ipynb` jupyter n
 The whole demo takes about 5 minutes to run through.
 
 **Prepare your data**
+
 You need to prepare your data as in the demo in `.h5ad` ([AnnData](https://anndata.readthedocs.io/en/latest/)) format. Specifically, for each dataset you need:
 - `counts_yourdataset.h5ad`: a count matrix (cell-by-gene for RNA; cell-by-enhancer for mC and ATAC) of the single-cell transcriptome/epigenome data.
 - `gene_profiles_yourdataaset.h5ad`: a gene-level feature matrix (average gene-level DNA methylation or ATAC signals for epigenome data). This information is not directly used for enhancer-gene association, but only to integrate cells from different datasets to identify cross-dataset metacells.
