@@ -34,19 +34,19 @@ pip install .
 
 1. The demo data, which includes mC, ATAC, and RNA profiles for >70,000 neurons from mouse primary motor cortex, can be downloaded with [this](https://drive.google.com/file/d/1JzP6cPTWFMj4vj5-Ie8QWBl8rpfnJa37/view?usp=sharing) link. Once downloaded, decompress it with the following command. For detailed description of data files, see `README_demodata.txt`.
 ```bash
-# decompress the data
+# decompress the data under the /demo directory
+cd ./demo
 tar -zxvf demodata.tar.gz
-# show the data specs
-cat README_demodata.txt 
 ```
 
 *After the data is in place. The rest of the demo takes about 5 minutes to run through.*
 
-2. With the `/demodata` in place, you can run through the entire enhancer-gene association analysis with the following command:
+2. With the `demodata` in place, you can run through the entire enhancer-gene association analysis with the following command:
+```bash
+# run the two scripts under /demo that links mCG-RNA and ATAC-RNA respectively.
+ ./link_mc_rna.sh && ./link_atac_rna.sh
 ```
- ./link_mc_rna.sh & ./link_atac_rna.sh
-```
-This will generate a result folder `demo_res` that includes integrated datasets, metacells, and correlations between enhancers and genes for mC-RNA and ATAC-RNA, respectively. For speed, this demo only randomly samples 10% cells from each dataset. However, the users can readily make the change to use more cells by tuning the `-s/--subsample_frac` argument. 
+This will generate a result folder `demoresults` that includes integrated datasets, metacells, and correlations between enhancers and genes for mC-RNA and ATAC-RNA, respectively. For speed, this demo only randomly samples 10% cells from each dataset. However, the users can readily make the change to use more cells by tuning the `-s/--subsample_frac` argument. 
 
 3. To visualize the results, run through the `visualize_links.ipynb` notebook, which generates visualizations with a few simple commands backed by our customized `CorrRes` class. See section **Visualization** below for more details.
 ![](./doc/plot_dist_mc.png)

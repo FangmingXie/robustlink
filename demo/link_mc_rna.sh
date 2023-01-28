@@ -12,13 +12,13 @@
 
 ## configurations
 # input and output
-out_dir="./demo_res"
+out_dir="./demoresults"
 data_dir="./demodata"
 tolink="enhancer_gene_pairs_1mbp.tsv"
 countdata_gene="counts_gene_rna.h5ad"
-countdata_enh="counts_enh_atac.h5ad"
+countdata_enh="counts_enh_mc.h5ad"
 fusiondata_rna="profiles_hvgene_rna.h5ad"
-fusiondata_atac="profiles_hvgene_atac.h5ad" 
+fusiondata_mc="profiles_hvgene_mc.h5ad" 
 
 # parameters
 ka=30  # within modality k nearest neighbors
@@ -31,18 +31,18 @@ num_metacell_limit=1001
 ## end of configuration
 
 # prepare
-study_tag="link_rna_atac_ka${ka}_knn${knn}"
+study_tag="link_rna_mc_ka${ka}_knn${knn}"
 echo $study_tag
 scfusion_dir=${out_dir} # results of scFusion
 
 # 1.
 # # run SCF - repeatedly on subsets of cells (i) 
 echo "STEP1..."
-python robustlink scfusion \
+python ../robustlink scfusion \
 	-i  ${data_dir} \
-	-id ${fusiondata_atac} ${fusiondata_rna} \
-	-fd ${fusiondata_atac} \
-	-im "atac" "rna" \
+	-id ${fusiondata_mc} ${fusiondata_rna} \
+	-fd ${fusiondata_mc} \
+	-im "mc" "rna" \
 	-o  ${out_dir} \
 	-tag ${study_tag} \
 	--ka_smooth $ka \
@@ -53,7 +53,7 @@ python robustlink scfusion \
 # 2.
 # run leiden clustering for each (i) 
 echo "STEP2..."
-python robustlink metacell \
+python ../robustlink metacell \
 	-i  "${data_dir}/${fusiondata_rna}" \
 	-o  ${out_dir} \
 	-tag ${study_tag} \
@@ -64,13 +64,13 @@ python robustlink metacell \
 # # correlation analysis (i, r) - r is for resolution
 echo "STEP3..."
 for (( i=0; i<${subsample_times}; i++ )); do
-	python robustlink corr_atac \
+	python ../robustlink corr_mc \
 		--tolink         "${data_dir}/$tolink" \
 		--countdata_gene "${data_dir}/${countdata_gene}" \
 		--countdata_enh  "${data_dir}/${countdata_enh}" \
 		--scfusion_dir   ${scfusion_dir} \
 		--fusiondata_rna ${fusiondata_rna} \
-		--fusiondata_mc  ${fusiondata_atac} \
+		--fusiondata_mc  ${fusiondata_mc} \
 		-tag ${study_tag} \
 		-isub $i \
 		--corr_type ${corr_type} \

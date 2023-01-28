@@ -1,9 +1,10 @@
 # to not include things
+demo/demodata/
+demo/demoresults/
 data.tar.gz
 data/
 newdata/
 demodata/
-demo_res/
 demodata.tar.gz
 results/
 test/
