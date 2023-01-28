@@ -337,7 +337,7 @@ class CorrRes():
                       'pairs <500kb',
                       'pairs <100kb',
                       ]
-            colors = ['black', 'gray', self.lightcolor, self.color]
+            colors = ['gray', 'black', self.lightcolor, self.color]
             corr_tracks = [
                    res_corrs['corr_shuff_cells'].values,
                    res_corrs['corr_shuff'].values,
