@@ -3,7 +3,7 @@
 import argparse
 import logging
 
-from scf import SCF_main_repeat_subsampling
+from robustlink.scf import SCF_main_repeat_subsampling
 from robustlink import generate_metacells_rna
 from robustlink import correlate_metacells_mc_rna
 from robustlink import correlate_metacells_atac_rna
@@ -11,7 +11,7 @@ from robustlink import correlate_metacells_atac_rna
 def create_parser():
     """
     """
-    parser = argparse.ArgumentParser(prog='python robustlink')
+    parser = argparse.ArgumentParser(prog='python -m robustlink')
     subparsers = parser.add_subparsers()
 
     # scfusion 
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
     if not hasattr(args, 'cmd'):
-        raise ValueError("Wrong input, please run: `python robustlink --help`")
+        raise ValueError("Wrong input, please run: `python -m robustlink --help`")
     elif args.cmd == 'scfusion':
         SCF_main_repeat_subsampling.main(args)
     elif args.cmd == 'metacell':

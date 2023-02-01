@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "robustlink"
+version = "0.1.1"
+authors = [
+  { name="Fangming Xie", email="f7xie@ucsd.edu" },
+  { name="Ethan Armand", email="earmand@ucsd.edu" },
+  { name="Eran Mukamel", email="emukamel@ucsd.edu" },
+]
+description = "A python package for linking genes and enhancers"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3.8",
+    "License :: OSI Approved :: MIT License",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/FangmingXie/robustlink"

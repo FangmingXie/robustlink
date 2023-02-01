@@ -12,8 +12,8 @@ import argparse
 import anndata
 
 from robustlink import utils
-from scf import clst_utils
-from scf import basic_utils
+from robustlink.scf import clst_utils
+from robustlink.scf import basic_utils
 
 def pipe_singlemod_clustering(
         f_ann,

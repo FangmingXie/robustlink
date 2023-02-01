@@ -38,7 +38,7 @@ scfusion_dir=${out_dir} # results of scFusion
 # 1.
 # # run SCF - repeatedly on subsets of cells (i) 
 echo "STEP1..."
-python ../robustlink scfusion \
+python -m robustlink scfusion \
 	-i  ${data_dir} \
 	-id ${fusiondata_atac} ${fusiondata_rna} \
 	-fd ${fusiondata_atac} \
@@ -53,7 +53,7 @@ python ../robustlink scfusion \
 # 2.
 # run leiden clustering for each (i) 
 echo "STEP2..."
-python ../robustlink metacell \
+python -m robustlink metacell \
 	-i  "${data_dir}/${fusiondata_rna}" \
 	-o  ${out_dir} \
 	-tag ${study_tag} \
@@ -64,7 +64,7 @@ python ../robustlink metacell \
 # # correlation analysis (i, r) - r is for resolution
 echo "STEP3..."
 for (( i=0; i<${subsample_times}; i++ )); do
-	python ../robustlink corr_atac \
+	python -m robustlink corr_atac \
 		--tolink         "${data_dir}/$tolink" \
 		--countdata_gene "${data_dir}/${countdata_gene}" \
 		--countdata_enh  "${data_dir}/${countdata_enh}" \
