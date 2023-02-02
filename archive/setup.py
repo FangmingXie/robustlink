@@ -14,4 +14,7 @@ setup(
         'Development Status :: 4 - Beta',
         'Programming Language :: Python :: 3.8',
     ],
+    install_requires=[
+        'numpy',
+    ]
     )
