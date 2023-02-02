@@ -49,7 +49,7 @@ bash link_mc_rna.sh && bash link_atac_rna.sh
 ```
 This will generate a result folder `demoresults/` that includes integrated datasets, metacells, and correlations between enhancers and genes for mC-RNA and ATAC-RNA, respectively. For speed, this demo only randomly samples 10% cells from each dataset. However, the users can readily make the change to use more cells by tuning the `-s/--subsample_frac` argument. 
 
-3. To visualize the results, run through `visualize_links.ipynb` by launching `jupyter lab`, which generates visualizations with a few simple commands backed by our customized `CorrRes` class. See section **Visualization** below for more details.
+3. To visualize the results, run through `visualize_links.ipynb` by launching `jupyter lab` (included in the conda env). The notebook generates visualizations with a few simple commands backed by our customized `CorrRes` class. See section **Visualization** below for more details.
 ![](./doc/plot_dist_mc.png)
 ![](./doc/plot_dist_atac.png)
 
