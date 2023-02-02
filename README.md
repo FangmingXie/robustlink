@@ -34,6 +34,8 @@ pip install robustlink
 The `demo/` directory contains an example usage of this package, by linking enhancer-gene pairs using single-cell transcriptomes (scRNA-seq) and epigenome (snmC-seq, snATAC-seq). 
 
 ```bash
+# clone this repo and go into demo/
+git clone https://github.com/FangmingXie/robustlink.git
 cd ./robustlink/demo
 ```
 
