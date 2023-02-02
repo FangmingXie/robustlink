@@ -1,7 +1,6 @@
 # Robust enhancer-gene association prediction using single cell transcriptomes and epigenomes
 
 [![version](https://badgen.net/pypi/v/robustlink/)](https://pypi.org/project/robustlink/)
-[![license](https://badgen.net/pypi/license/robustlink/)]()
 [![python v](https://badgen.net/pypi/python/robustlink/)](https://pypi.org/project/robustlink/)
 
 
