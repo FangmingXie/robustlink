@@ -21,7 +21,8 @@ We recommend users to use a [conda environment](https://docs.conda.io/projects/c
 git clone https://github.com/FangmingXie/robustlink.git
 
 # setting up the environment and install dependancies using the provided `env.yml` file.
-conda env create -f ./robustlink/env.yml
+wget https://raw.githubusercontent.com/FangmingXie/robustlink/master/env.yml
+conda env create -f env.yml
 conda activate env_robustlink 
 
 # install this package using pip from PyPI
