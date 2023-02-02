@@ -39,15 +39,15 @@ tar -zxvf demodata.tar.gz
 
 2. With `demodata/` in place, we now download the demo scripts. 
 ```bash
-# get the demo/ scripts
+# get the demo scripts from this repo under demo/
 wget https://raw.githubusercontent.com/FangmingXie/robustlink/master/demo/link_mc_rna.sh
 wget https://raw.githubusercontent.com/FangmingXie/robustlink/master/demo/link_atac_rna.sh
 wget https://raw.githubusercontent.com/FangmingXie/robustlink/master/demo/visualize_links.ipynb
 ```
 
-3. You can now run through the entire enhancer-gene association analysis with the following command:
+3. We can now run through the entire enhancer-gene association analysis with the following command:
 ```bash
-# run the two scripts that links mCG-RNA and ATAC-RNA respectively.
+# links mCG-RNA and ATAC-RNA respectively
 bash link_mc_rna.sh && bash link_atac_rna.sh
 ```
 This will generate a result folder `demoresults/` that includes integrated datasets, metacells, and correlations between enhancers and genes for mC-RNA and ATAC-RNA, respectively. For speed, this demo only randomly samples 10% cells from each dataset. However, the users can readily make the change to use more cells by tuning the `-s/--subsample_frac` argument. 
