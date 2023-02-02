@@ -58,8 +58,8 @@ This will generate a result folder `demoresults` that includes integrated datase
 ### Prepare your data ###
 
 You need to prepare your data as in the demo in `.h5ad` ([AnnData](https://anndata.readthedocs.io/en/latest/)) format. Specifically, for each dataset you need:
-- `counts_YOURDATASET.h5ad`: a count matrix (cell-by-gene for RNA; cell-by-enhancer for mC and ATAC) of the single-cell transcriptome/epigenome data.
-- `gene_profiles_YOURDATASET.h5ad`: a gene-level feature matrix (average gene-level DNA methylation or ATAC signals for epigenome data). This information is not directly used for enhancer-gene association, but only to integrate cells from different datasets to identify cross-dataset metacells.
+- `counts_YOUR_DATASET_NAME.h5ad`: a count matrix (cell-by-gene for RNA; cell-by-enhancer for mC and ATAC) of the single-cell transcriptome/epigenome data.
+- `gene_profiles_YOUR_DATASET_NAME.h5ad`: a gene-level feature matrix (average gene-level DNA methylation or ATAC signals for epigenome data). This information is not directly used for enhancer-gene association, but only to integrate cells from different datasets to identify cross-dataset metacells.
 
 In addition, you need annotation file tables (.tsv):
 - a gene list
