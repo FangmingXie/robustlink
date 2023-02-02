@@ -16,7 +16,6 @@ We recommend users to use a [conda environment](https://docs.conda.io/projects/c
 
 ### Installation ###
 
-Run the following command to clone this repo and install dependencies.
 ```bash
 # clone this repo
 git clone https://github.com/FangmingXie/robustlink.git
