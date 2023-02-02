@@ -1,7 +1,9 @@
 # Robust enhancer-gene association prediction using single cell transcriptomes and epigenomes
 
 [![version](https://badgen.net/pypi/v/robustlink/)](https://pypi.org/project/robustlink/)
-[![license](https://badgen.net/pypi/license/robustlink/)]
+[![license](https://badgen.net/pypi/license/robustlink/)]()
+[![python v](https://badgen.net/pypi/python/robustlink/)](https://pypi.org/project/robustlink/)
+
 
 This repository hosts the package `robustlink`, a tool that integrates single-cell transcriptomes (scRNA-seq) and epigenomes (snATAC-seq and snmC-seq) and identifies robust associations between cis-regulatory elements (enhancers) and genes. 
 
