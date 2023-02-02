@@ -46,6 +46,10 @@ tar -zxvf demodata.tar.gz
 
 2. With the `demodata` in place, you can run through the entire enhancer-gene association analysis with the following command:
 ```bash
+wget https://raw.githubusercontent.com/FangmingXie/robustlink/master/demo/link_mc_rna.sh
+wget https://raw.githubusercontent.com/FangmingXie/robustlink/master/demo/link_atac_rna.sh
+wget https://raw.githubusercontent.com/FangmingXie/robustlink/master/demo/visualize_links.ipynb
+
 # run the two scripts under demo/ that links mCG-RNA and ATAC-RNA respectively.
  ./link_mc_rna.sh && ./link_atac_rna.sh
 ```
