@@ -9,12 +9,11 @@ Reference:
 Correspondence: [Fangming Xie](mailto:f7xie@ucsd.edu) and [Eran A. Mukamel](mailto:emukamel@ucsd.edu)
 
 # Getting started
-### System requirements ###
+### Installation ###
 
 This package is tested on a Ubuntu 18.04.6 LTS (Bionic Beaver) server. However, we expect it can be operated under a wide range of systems.
 We recommend users to use a [conda environment](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html) to install dependencies. This requires users to pre-install [Anaconda](https://www.anaconda.com/products/individual).
 
-### Installation ###
 
 ```bash
 # setting up the environment and install dependancies using the provided `env.yml` file.
@@ -28,28 +27,32 @@ pip install robustlink
 
 ### Demo ###
 
-The `demo/` directory contains an example usage of this package, by linking enhancer-gene pairs using single-cell transcriptomes (scRNA-seq) and epigenome (snmC-seq, snATAC-seq). Follow the instructions below to run through this demo.
+The `demo/` directory of this repository contains an example usage of this package, by linking enhancer-gene pairs using single-cell transcriptomes (scRNA-seq) and epigenome (snmC-seq, snATAC-seq). Follow the instructions below to run through this demo.
 
-1. The demo data, which includes mC, ATAC, and RNA profiles for >70,000 neurons from mouse primary motor cortex, can be downloaded with [this](https://drive.google.com/file/d/1JzP6cPTWFMj4vj5-Ie8QWBl8rpfnJa37/view?usp=sharing) link. Once downloaded, decompress it with the following command. For detailed description of data files, see `README_demodata.txt`.
+1. The demo data, which includes mC, ATAC, and RNA profiles for >70,000 neurons from mouse primary motor cortex, can be downloaded with [this](https://drive.google.com/file/d/1JzP6cPTWFMj4vj5-Ie8QWBl8rpfnJa37/view?usp=sharing) link. Once downloaded, decompress it with the following command. For detailed description of data files, see `README_demodata.txt` after decompression.
 ```bash
 # decompress the data
 tar -zxvf demodata.tar.gz
 ```
 
-*After the data is in place. The rest of the demo takes about 5 minutes to run through.*
+*Once the data is in place. The rest of the demo takes about 5 minutes to run through.*
 
-2. With the `demodata/` in place, you can run through the entire enhancer-gene association analysis with the following command:
+2. With `demodata/` in place, we now download the demo scripts. 
 ```bash
+# get the demo/ scripts
 wget https://raw.githubusercontent.com/FangmingXie/robustlink/master/demo/link_mc_rna.sh
 wget https://raw.githubusercontent.com/FangmingXie/robustlink/master/demo/link_atac_rna.sh
 wget https://raw.githubusercontent.com/FangmingXie/robustlink/master/demo/visualize_links.ipynb
+```
 
+3. You can now run through the entire enhancer-gene association analysis with the following command:
+```bash
 # run the two scripts that links mCG-RNA and ATAC-RNA respectively.
 bash link_mc_rna.sh && bash link_atac_rna.sh
 ```
 This will generate a result folder `demoresults/` that includes integrated datasets, metacells, and correlations between enhancers and genes for mC-RNA and ATAC-RNA, respectively. For speed, this demo only randomly samples 10% cells from each dataset. However, the users can readily make the change to use more cells by tuning the `-s/--subsample_frac` argument. 
 
-3. To visualize the results, run through `visualize_links.ipynb` by launching `jupyter lab`. The notebook generates visualizations with a few simple commands backed by our customized `CorrRes` class. See section **Visualization** below for more details.
+4. To visualize the results, run through `visualize_links.ipynb` by launching `jupyter lab`. The notebook generates visualizations with a few simple commands backed by our customized `CorrRes` class. See section **Visualization** below for more details.
 ![](./doc/plot_dist_mc.png)
 ![](./doc/plot_dist_atac.png)
 
