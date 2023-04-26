@@ -2,7 +2,7 @@
 
 [![version](https://badgen.net/pypi/v/robustlink/)](https://pypi.org/project/robustlink/)
 [![python v](https://badgen.net/pypi/python/robustlink/)](https://pypi.org/project/robustlink/)
-
+[![DOI](https://zenodo.org/badge/589700909.svg)](https://zenodo.org/badge/latestdoi/589700909)
 
 This repository hosts the package `robustlink`, a tool that integrates single-cell transcriptomes (scRNA-seq) and epigenomes (snATAC-seq and snmC-seq) and identifies robust associations between cis-regulatory elements (enhancers) and genes. 
 
